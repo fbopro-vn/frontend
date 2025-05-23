@@ -1,0 +1,101 @@
+[
+  {
+    "select": "",
+    "product_id": "SP01",
+    "product": "Thùng phiếu vuông 15cm",
+    "product_group": "Thùng phiếu",
+    "unit": "Cái",
+    "costPrice": 165000,
+    "salePrice": 200000,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP02",
+    "product": "Thùng phiếu vuông 20cm",
+    "product_group": "Thùng phiếu",
+    "unit": "Cái",
+    "costPrice": 180000,
+    "salePrice": 200000,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP03",
+    "product": "Thùng phiếu vuông 25cm",
+    "product_group": "Thùng phiếu",
+    "unit": "Cái",
+    "costPrice": 200000,
+    "salePrice": 200000,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP04",
+    "product": "Thùng phiếu vuông 30cm",
+    "product_group": "Thùng phiếu",
+    "unit": "Cái",
+    "costPrice": 250000,
+    "salePrice": 200000,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP05",
+    "product": "Thùng phiếu vuông 40cm",
+    "product_group": "Thùng phiếu",
+    "unit": "Cái",
+    "costPrice": 300000,
+    "salePrice": 0,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP06",
+    "product": "TipBox vuông 15 Trong",
+    "product_group": "TipBox",
+    "unit": "Cái",
+    "costPrice": 150000,
+    "salePrice": 0,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP07",
+    "product": "TipBox vuông 15 Đen",
+    "product_group": "TipBox",
+    "unit": "Cái",
+    "costPrice": 160000,
+    "salePrice": 0,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP08",
+    "product": "TipBox vuông 20 Trong",
+    "product_group": "TipBox",
+    "unit": "Cái",
+    "costPrice": 185000,
+    "salePrice": 0,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  },
+  {
+    "select": "",
+    "product_id": "SP09",
+    "product": "TipBox vuông 20 Đen",
+    "product_group": "TipBox",
+    "unit": "Cái",
+    "costPrice": 185000,
+    "salePrice": 0,
+    "stockQuantity": 0,
+    "created_at": "01/04/2025"
+  }
+]

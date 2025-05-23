@@ -1,0 +1,90 @@
+[
+  {
+    "material_id": "VT001",
+    "material_name": "Mica Đình Tổng",
+    "material_group": "Mica Tấm",
+    "unit": "Cái",
+    "provider_name": "Đình Tổng",
+    "created_at": "05/01/2025"
+  },
+  {
+    "material_id": "VT002",
+    "material_name": "Mica Huy Đạt",
+    "material_group": "Mica Tấm",
+    "unit": "Cái",
+    "provider_name": "Huy Đạt",
+    "created_at": "12/01/2025"
+  },
+  {
+    "material_id": "VT003",
+    "material_name": "Keo Lạnh",
+    "material_group": "Gia Công",
+    "unit": "Cái",
+    "provider_name": "DTC",
+    "created_at": "20/01/2025"
+  },
+  {
+    "material_id": "VT004",
+    "material_name": "Hàng Trung Quốc",
+    "material_group": "Gia Công",
+    "unit": "Cái",
+    "provider_name": "Trung Quốc",
+    "created_at": "27/01/2025"
+  },
+  {
+    "material_id": "VT005",
+    "material_name": "In Decal Đồng Phong",
+    "material_group": "Decal",
+    "unit": "Cái",
+    "provider_name": "Đồng Phong",
+    "created_at": "03/02/2025"
+  },
+  {
+    "material_id": "VT006",
+    "material_name": "In Decal DTC",
+    "material_group": "Decal",
+    "unit": "Cái",
+    "provider_name": "DTC",
+    "created_at": "10/02/2025"
+  },
+  {
+    "material_id": "VT007",
+    "material_name": "In UV DTC",
+    "material_group": "In UV",
+    "unit": "Cái",
+    "provider_name": "DTC",
+    "created_at": "17/02/2025"
+  },
+  {
+    "material_id": "VT008",
+    "material_name": "Ship Hàng AhaMove",
+    "material_group": "Shipping",
+    "unit": "Cái",
+    "provider_name": "AhaMove",
+    "created_at": "24/02/2025"
+  },
+  {
+    "material_id": "VT009",
+    "material_name": "Ship Hàng Nghĩa",
+    "material_group": "Shipping",
+    "unit": "Cái",
+    "provider_name": "Nghĩa",
+    "created_at": "02/03/2025"
+  },
+  {
+    "material_id": "VT010",
+    "material_name": "Giao Hàng Nhanh",
+    "material_group": "Shipping",
+    "unit": "Cái",
+    "provider_name": "GHN",
+    "created_at": "09/03/2025"
+  },
+  {
+    "material_id": "VT011",
+    "material_name": "Nước Uống",
+    "material_group": "F&B",
+    "unit": "Cái",
+    "provider_name": "CTY SDC",
+    "created_at": "16/03/2025"
+  }
+]

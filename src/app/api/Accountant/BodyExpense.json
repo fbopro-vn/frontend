@@ -1,0 +1,14 @@
+[
+  { "name": "Sữa chua đông lạnh", "thanh_toan": 100000, "date": "12/03/2025" },
+  { "name": "Bánh sandwich kem", "thanh_toan": 500000, "date": "08/02/2025" },
+  { "name": "Bánh su kem", "thanh_toan": 600000, "date": "25/03/2025" },
+  { "name": "Bánh cupcake", "thanh_toan": 200000, "date": "14/01/2025" },
+  { "name": "Bánh gừng", "thanh_toan": 100000, "date": "19/03/2025" },
+  { "name": "Bánh phô mai", "thanh_toan": 800000, "date": "27/03/2025" },
+  { "name": "Bánh brownie", "thanh_toan": 400000, "date": "06/02/2025" },
+  { "name": "Bánh macaron", "thanh_toan": 300000, "date": "01/03/2025" },
+  { "name": "Bánh tiramisu", "thanh_toan": 100000, "date": "17/01/2025" },
+  { "name": "Bánh churros", "thanh_toan": 900000, "date": "09/03/2025" },
+  { "name": "Bánh Kiwi", "thanh_toan": 100000, "date": "28/03/2025" },
+  { "name": "Bánh lạc", "thanh_toan": 100000, "date": "21/02/2025" }
+]

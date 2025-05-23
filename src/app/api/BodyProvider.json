@@ -1,0 +1,137 @@
+[
+  {
+    "select": "",
+    "provider_id": "NCC001",
+    "provider": "Công ty TNHH Minh Long",
+    "phone": "0909123456",
+    "address": "123 Lý Thường Kiệt, Q.10, TP.HCM",
+    "debt": "2.000.000",
+    "total_buy": "15.000.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC002",
+    "provider": "Công ty CP Bao Bì Việt",
+    "phone": "0902233445",
+    "address": "45 Trần Phú, Q.5, TP.HCM",
+    "debt": "1.200.000",
+    "total_buy": "8.500.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC003",
+    "provider": "Cửa hàng In Ấn Minh Khang",
+    "phone": "0988776655",
+    "address": "78 Nguyễn Văn Cừ, Q.1, TP.HCM",
+    "debt": "0",
+    "total_buy": "5.200.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC004",
+    "provider": "Thành Phát Co., Ltd",
+    "phone": "0911888999",
+    "address": "200 Cách Mạng Tháng 8, Q.3, TP.HCM",
+    "debt": "4.000.000",
+    "total_buy": "10.000.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC005",
+    "provider": "Vạn Hưng Phát",
+    "phone": "0933666999",
+    "address": "15 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM",
+    "debt": "500.000",
+    "total_buy": "2.300.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC006",
+    "provider": "CTy TNHH Bao Bì An Phát",
+    "phone": "0977112233",
+    "address": "10 Lê Văn Việt, Q.9, TP.Thủ Đức",
+    "debt": "3.100.000",
+    "total_buy": "9.800.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC007",
+    "provider": "Xưởng In Bao Bì Mai Thành",
+    "phone": "0968998899",
+    "address": "56 Bạch Đằng, Q.Tân Bình, TP.HCM",
+    "debt": "0",
+    "total_buy": "7.000.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC008",
+    "provider": "Minh Tân Printing",
+    "phone": "0912233445",
+    "address": "89 Trường Chinh, Q.Tân Phú, TP.HCM",
+    "debt": "650.000",
+    "total_buy": "6.400.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC009",
+    "provider": "Bao Bì Song Hỷ",
+    "phone": "0932111999",
+    "address": "23 Cộng Hòa, Q.Tân Bình, TP.HCM",
+    "debt": "0",
+    "total_buy": "4.400.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC010",
+    "provider": "Thiên Long Packaging",
+    "phone": "0923344556",
+    "address": "12 Phan Đình Phùng, Q.Phú Nhuận, TP.HCM",
+    "debt": "850.000",
+    "total_buy": "3.000.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC011",
+    "provider": "Công ty TNHH In Bao Bì Hưng Thịnh",
+    "phone": "0977666555",
+    "address": "90 Nguyễn Trãi, Q.1, TP.HCM",
+    "debt": "1.700.000",
+    "total_buy": "12.600.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC012",
+    "provider": "Bao Bì Quang Vinh",
+    "phone": "0955443322",
+    "address": "76 Lê Thánh Tôn, Q.1, TP.HCM",
+    "debt": "0",
+    "total_buy": "4.800.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC013",
+    "provider": "Cửa hàng In Ấn VinaPack",
+    "phone": "0988899777",
+    "address": "34 Nguyễn Duy Trinh, Q.2, TP.Thủ Đức",
+    "debt": "900.000",
+    "total_buy": "5.500.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC014",
+    "provider": "In Ấn Lộc Phát",
+    "phone": "0911002200",
+    "address": "100 Điện Biên Phủ, Q.3, TP.HCM",
+    "debt": "3.000.000",
+    "total_buy": "11.000.000"
+  },
+  {
+    "select": "",
+    "provider_id": "NCC015",
+    "provider": "CTCP Bao Bì Tiến Phát",
+    "phone": "0933222111",
+    "address": "27 Pasteur, Q.1, TP.HCM",
+    "debt": "2.200.000",
+    "total_buy": "8.800.000"
+  }
+]

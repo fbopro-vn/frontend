@@ -1,0 +1,146 @@
+[
+  {
+    "select": "",
+    "invoice_id": "HD001",
+    "order_id": "DH001",
+    "date": "03/01/2025",
+    "vat": 0,
+    "total": 250000,
+    "deposit": 0,
+    "paid": 150000,
+    "remaining": 100000,
+    "paymentMethod": "Tiền mặt",
+    "paymentStatus": "Công nợ",
+    "seller": "Minh Cường",
+    "customer": "Nguyễn Văn A",
+    "customer_id": "KH001",
+    "note": "",
+    "products": [
+      {
+        "name": "Thùng phiếu vuông 25cm",
+        "unit": "Cái",
+        "costPrice": 150000,
+        "salePrice": 250000,
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "select": "",
+    "invoice_id": "HD002",
+    "order_id": "DH004",
+    "date": "04/01/2025",
+    "vat": 0,
+    "total": 900000,
+    "deposit": 300000,
+    "paid": 600000,
+    "remaining": 0,
+    "paymentMethod": "Tiền mặt",
+    "paymentStatus": "Đã thanh toán",
+    "seller": "Kim Ngân",
+    "customer": "Trần Thị B",
+    "customer_id": "KH002",
+    "note": "",
+    "products": [
+      {
+        "name": "Thùng phiếu vuông 30cm",
+        "unit": "Cái",
+        "costPrice": 200000,
+        "salePrice": 300000,
+        "amount": 3
+      }
+    ]
+  } ,
+  {
+    "select": "",
+    "invoice_id": "HD003",
+    "order_id": "DH008",
+    "date": "06/01/2025",
+    "vat": 1840000,
+    "total": 25920000,
+    "deposit": 8000000,
+    "paid": 25920000,
+    "remaining": 0,
+    "paymentMethod": "Tiền mặt",
+    "paymentStatus": "Đã thanh toán",
+    "seller": "Ngọc Anh",
+    "customer": "Hoàng Văn E",
+    "customer_id": "KH005",
+    "note": "",
+    "products": [
+      {
+        "name": "Thùng phiếu vuông 30cm",
+        "unit": "Cái",
+        "costPrice": 200000,
+        "salePrice": 300000,
+        "amount": 30
+      },
+      {
+        "name": "Thùng phiếu vuông 25cm",
+        "unit": "Cái",
+        "costPrice": 200000,
+        "salePrice": 1000000,
+        "amount": 10
+      },
+      {
+        "name": "Thùng phiếu vuông 20cm",
+        "unit": "Cái",
+        "costPrice": 200000,
+        "salePrice": 200000,
+        "amount": 20
+      }
+    ]
+  },
+  {
+    "select": "",
+    "invoice_id": "HD004",
+    "order_id": "DH009",
+    "date": "03/01/2025",
+    "vat": 0,
+    "total": 350000,
+    "deposit": 0,
+    "paid": 230000,
+    "remaining": 120000,
+    "paymentMethod": "Tiền mặt",
+    "paymentStatus": "Công nợ",
+    "seller": "Minh Cường",
+    "customer": "Nguyễn Văn A",
+    "customer_id": "KH001",
+    "note": "",
+    "products": [
+      {
+        "name": "Thùng phiếu vuông 25cm",
+        "unit": "Cái",
+        "costPrice": 150000,
+        "salePrice": 250000,
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "select": "",
+    "invoice_id": "HD005",
+    "order_id": "DH010",
+    "date": "03/01/2025",
+    "vat": 0,
+    "total": 200000,
+    "deposit": 0,
+    "paid": 50000,
+    "remaining": 150000,
+    "paymentMethod": "Tiền mặt",
+    "paymentStatus": "Công nợ",
+    "seller": "Minh Cường",
+    "customer": "Nguyễn Văn A",
+    "customer_id": "KH001",
+    "note": "",
+    "products": [
+      {
+        "name": "Thùng phiếu vuông 25cm",
+        "unit": "Cái",
+        "costPrice": 150000,
+        "salePrice": 250000,
+        "amount": 1
+      }
+    ]
+  }
+]

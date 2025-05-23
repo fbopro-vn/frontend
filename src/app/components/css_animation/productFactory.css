@@ -1,0 +1,73 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 150px;
+  height: 14px;
+  box-shadow: 0 3px 0 #fff;
+  position: relative;
+  display: grid;
+  clip-path: inset(-60px 0 -5px)
+}
+.loader:after {
+  content: "";
+  position: relative;
+  background: repeating-linear-gradient(90deg,#0000 0 calc(50% - 8px), #fff 0 calc(50% + 8px), #0000 0 100%) 0 0/calc(100%/3) 100%;
+  animation: l6-1 1s infinite;
+} 
+.loader:before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  aspect-ratio: 1;
+  left: calc(50% - 7px);
+  bottom: 0;
+  border-radius: 50%;
+  background: #fff;
+  animation: l6-2 1s infinite;
+}
+@keyframes l6-1 {
+  50%,100% {background-position: calc(100%/2) 0}
+}
+@keyframes l6-2 {
+  0%,50% {transform:translateY(-80px)}
+}
+
+
+/* Contact item */
+.contact-container {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+}
+.contact-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.contact-item:hover {
+  transform: translateY(-20px); /* Chỉ icon bật lên, giữ nguyên info */
+}
+.contact-item .iconC {
+  width: 40px;
+  height: 40px;
+  filter: invert(1);
+}
+.contact-info {
+  position: absolute;
+  bottom: -30px;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0; /* Ẩn thông tin ban đầu */
+  transform: translateY(0); /* Giữ nguyên vị trí */
+  transition: opacity 0.3s ease;
+}
+.contact-item:hover .contact-info {
+  opacity: 1; /* Hiện thông tin khi hover */
+}

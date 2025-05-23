@@ -1,0 +1,398 @@
+
+"use client";
+
+
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import BodyMerchandiseInput from '@/app/api/Merchandise/BodyMerchandiseInput.json'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { mutate } from "swr";
+import { useForm, Controller } from "react-hook-form";
+
+import useProductData from "@/app/hooks/useProductData";
+
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import CircularProgress from "@mui/material/CircularProgress";
+import InputAdornment from "@mui/material/InputAdornment";
+import AddIcon from "@mui/icons-material/Add";
+
+
+const UpdateMaterialModal = ({
+    checkedRows, data }: {
+        checkedRows: Record<string, boolean>
+        data: typeof BodyMerchandiseInput
+    }) => {
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset
+    } = useForm<Material>(); // Xác định kiểu dữ liệu cho form
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+    }
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const selectedCount = Object.values(checkedRows).filter(Boolean).length;
+    const isDisabled = selectedCount !== 1;
+    const selectedMaterialId = Object.keys(checkedRows).find(
+        (materialId) => checkedRows[materialId]
+      );
+
+
+    // const { materialData, error, isLoading } = useMaterialData();
+
+    const [inputValue, setInputValue] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [errorForm, setErrorForm] = useState("");
+    const [dialogType, setDialogType] = useState<"" | "group" | "unit">("");
+
+    // dialog
+    const handleOpenDialog = (type: "group" | "unit") => {
+        setDialogType(type);
+        setInputValue("");
+      };
+      
+      
+    const handleCloseDialog = () => setDialogType("");
+      
+      
+    // Hàm Lưu giá trị xuống local storage
+    const saveToLocalStorage = (key: string, value: any) => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+    };
+
+    // Hàm Lấy giá trị từ localstorage
+    const getFromLocalStorage = (key: string): any => {
+        if (typeof window !== "undefined") {
+            const storedValue = localStorage.getItem(key);
+            return storedValue ? JSON.parse(storedValue) : null;
+        }
+        return null;
+    };
+    // Hàm thêm nhóm hoặc đơn vị tính Lưu xuống localstorage
+    const addMaterialGroup = (newGroup: string) => {
+        if (!newGroup.trim()) return; // Không lưu nếu rỗng
+
+        const storedGroups = getFromLocalStorage("materialGroups") || [];
+
+        if (storedGroups.includes(newGroup)) {
+            alert(`Nhóm vật tư "${newGroup}" đã tồn tại!`);
+            return;
+        }
+
+        const updatedGroups = [...storedGroups, newGroup];
+        saveToLocalStorage("materialGroups", updatedGroups);
+        handleCloseDialog();
+    };
+
+    const addMaterialUnit = (newUnit: string) => {
+        if (!newUnit.trim()) return; // Không lưu nếu rỗng
+
+        const storedUnits = getFromLocalStorage("material_unit") || [];
+
+        if (storedUnits.includes(newUnit)) {
+            alert(`Đơn vị tính "${newUnit}" đã tồn tại!`);
+            return;
+        }
+
+        const updatedUnits = [...storedUnits, newUnit];
+        saveToLocalStorage("material_unit", updatedUnits);
+        handleCloseDialog();
+    };
+    const onSubmit = async (data: Material) => {
+        setLoading(true);
+        setErrorForm("");
+        try {
+            console.log("Dữ liệu gửi đi", {
+                name: data.name,
+                material_group: data.material_group,
+                unit: data.unit,
+                costPrice: Number(String(data.costPrice).replace(/\D/g, "")),
+                salePrice: Number(String(data.salePrice).replace(/\D/g, "")) ?? 0,
+                stockQuantity: data.stockQuantity ?? 0,
+                stock_in: 0,
+                stock_out: 0,
+            }
+            )
+            const response = await axios.post("http://192.168.1.203:8000/qlybanhang/add-cate", {
+                name: data.name,
+                material_group: data.material_group,
+                unit: data.unit,
+                costPrice: Number(String(data.costPrice).replace(/\D/g, "")),
+                salePrice: Number(String(data.salePrice).replace(/\D/g, "")) ?? 0,
+                stockQuantity: data.stockQuantity ?? 0,
+                stock_in: 0,
+                stock_out: 0,
+            }, {
+                headers: { "Content-Type": "application/json" }
+            });
+
+            mutate("http://192.168.1.203:8000/qlybanhang/cate")
+            handleClose();
+        } catch (err) {
+            console.error("Lỗi khi lưu vật tư", err);
+            setErrorForm("Không thể lưu vật tư, vui lòng thử lại!");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (open && selectedMaterialId) {
+          const selectedData = data.find((item) => item.material_id === selectedMaterialId);
+          if (!selectedData) return;
+      
+          reset({
+            material_name: selectedData.material_name || "",
+            material_group: selectedData.material_group || "",
+            unit: selectedData.unit || "",
+            provider_name: selectedData.provider_name
+          });
+        }
+      }, [open]);
+      
+
+    return (
+        <>
+            <Box>
+                {/* Button */}
+                <Button sx={{
+                    bgcolor: '#8DB883',
+                    color: 'white',
+                    width: "100px"
+                }}
+                    startIcon={<SettingsOutlinedIcon />}
+                    onClick={handleOpen}
+                    disabled={isDisabled}
+                >Sửa</Button>
+
+                <Modal open={open} onClose={handleClose}>
+                    <Box sx={{ 
+                    position: 'absolute', 
+                    top: '40%', left: '50%', 
+                    transform: 'translate(-50%, -50%)', 
+                    bgcolor: 'background.paper', 
+                    minWidth: '500px',
+                    boxShadow: 24, 
+                    borderRadius: 2 }}>
+                        {/* Tiêu đề */}
+                        <Box
+                            sx={{
+                                backgroundColor: "#8DB883", // Nền đỏ
+                                textAlign: "center", // Căn giữa chữ
+                                color: "white", // Chữ trắng
+                                fontWeight: "bold",
+                                fontSize: "18px",
+                                p: 3,
+                                borderTopLeftRadius: 8,
+                                borderTopRightRadius: 8,
+                            }}
+                        >
+                            Sửa vật tư
+                        </Box>
+                        {/* Nội dung */}
+                       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+                        <Box display='flex' flexDirection='column' gap={2} p={2}>
+                            <Box display="flex" flexDirection="column" mb='20px'>
+                                <Typography fontWeight='bold'>Mã vật tư</Typography>
+                                <TextField disabled sx={{ height: 35, '& .MuiInputBase-root': { height: 35 }, borderRadius: 10 }}
+                                    value={selectedMaterialId || ""}
+                                />
+                            </Box>
+
+                            <Box display="flex" flexDirection="column">
+                                <Typography fontWeight='bold'>Tên vật tư</Typography>
+                                <TextField
+                                    {...register("material_name", {
+                                        required: "Tên vật tư không được để trống",
+                                        minLength: { value: 3, message: "Tên phải có ít nhất 3 ký tự" },
+                                        maxLength: { value: 50, message: "Tên không được vượt quá 50 ký tự" }
+                                    })}
+                                    sx={{ '& .MuiInputBase-root': { height: 40, borderRadius: 2 } }}
+
+                                />
+                                <Typography sx={{ minHeight: "20px", fontSize: "15px", color: "red", mt: 0.5 }}>
+                                    {errors.material_name?.message}
+                                </Typography>
+                            </Box>
+                            <Box display="flex" flexDirection="column">
+                                <Typography fontWeight='bold'>Nhóm vật tư</Typography>
+
+                                <Controller
+                                    name="material_group"
+                                    control={control}
+                                    rules={{
+                                        required: "Nhóm vật tư không được để trống",
+                                        minLength: { value: 2, message: "Nhóm vật tư phải có ít nhất 2 ký tự" },
+                                        maxLength: { value: 30, message: "Nhóm vật tư không được vượt quá 30 ký tự" }
+                                    }}
+                                    render={({ field }) => (
+                                        <Autocomplete
+                                            {...field}
+                                            disablePortal
+                                            freeSolo
+                                            defaultValue={""}
+                                            options={getFromLocalStorage("materialGroups") || ["Không có kết quả!"]} // Đảm bảo không 
+                                            value={field.value || ""}  // 🔹 Luôn có giá trị mặc định
+                                            onChange={(_, data) => field.onChange(data)} // Cập nhật giá trị cho form
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    sx={{
+                                                        height: 35,
+                                                        "& .MuiOutlinedInput-root": {
+                                                            paddingRight: "12px !important", // Chừa khoảng trống để không bị đè lên icon
+                                                        },
+                                                        "& .MuiInputBase-root": { height: 40, borderRadius: 2 },
+                                                        
+                                                    }}
+                                                    InputProps={{
+                                                        ...params.InputProps, // ⚠️ Giữ lại `InputProps` gốc của Autocomplete
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                {params.InputProps?.endAdornment} {/* Giữ lại dropdown mặc định */}
+                                                                <IconButton onClick={() => handleOpenDialog("group")} edge="end">
+                                                                    <AddIcon />
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                    )}
+                                />
+                                <Typography sx={{ minHeight: "20px", fontSize: "15px", color: "red", mt: 0.5 }}>
+                                    {errors.material_group?.message}
+                                </Typography>
+                            </Box>
+
+                            <Box display="flex" flexDirection="column">
+                                <Typography fontWeight='bold'>Đơn vị tính</Typography>
+
+                                <Controller
+                                    name="unit"
+                                    control={control}
+                                    rules={{
+                                        required: "Đơn vị tính không được để trống",
+                                        minLength: { value: 2, message: "Đơn vị tính phải có ít nhất 2 ký tự" },
+                                        maxLength: { value: 30, message: "Đơn vị tính không được vượt quá 30 ký tự" }
+                                    }}
+                                    render={({ field }) => (
+                                        <Autocomplete
+                                            {...field}
+                                            disablePortal
+                                            freeSolo
+                                            defaultValue={""}
+                                            options={getFromLocalStorage("materialUnit") || ["Không có kết quả!"]} // Đảm bảo không 
+                                            value={field.value || ""}  // 🔹 Luôn có giá trị mặc định
+                                            onChange={(_, data) => field.onChange(data)} // Cập nhật giá trị cho form
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    sx={{
+                                                
+                                                        "& .MuiOutlinedInput-root": {
+                                                            paddingRight: "12px !important", // Chừa khoảng trống để không bị đè lên icon
+                                                        },
+                                                        "& .MuiInputBase-root": { height: 40, borderRadius: 2 },
+                                                    
+                                                    }}
+                                                    InputProps={{
+                                                        ...params.InputProps, // ⚠️ Giữ lại `InputProps` gốc của Autocomplete
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                {params.InputProps?.endAdornment} {/* Giữ lại dropdown mặc định */}
+                                                                <IconButton onClick={() => handleOpenDialog("unit")} edge="end">
+                                                                    <AddIcon />
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            )}
+                                        />
+                                    )}
+                                />
+                                <Typography sx={{ minHeight: "20px", fontSize: "15px", color: "red" }}>
+                                    {errors.unit?.message}
+                                </Typography>
+                            </Box>
+                        </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'end', gap: 3, paddingLeft: 4, paddingRight: 4, paddingBottom: 4, mt: 10 }}>
+                                {/* Hiển thị lỗi chung nếu có */}
+                                {errorForm && (
+                                    <Typography sx={{ color: "red", textAlign: "center", fontSize: "15px" }}>
+                                        {errorForm}
+                                    </Typography>
+                                )}
+                                <Button variant="outlined" sx={{ color: "#8DB883", border: "1px solid #8DB883", width: "100px", "&:hover": { backgroundColor: "rgba(141, 184, 131, 0.1)", border: "1px solid #8DB883" } }} onClick={() => {
+                                    reset(),
+                                        setErrorForm(""),
+                                        handleClose()
+                                }}>Bỏ qua</Button>
+                                <Button type="submit" variant="contained" sx={{ bgcolor: "#8DB883", width: "100px", color: 'white' }} disabled={loading}>{loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Lưu"}</Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Modal>
+
+                <Dialog open={dialogType === "group"} onClose={handleCloseDialog}>
+                <DialogTitle>Thêm nhóm vật tư</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        fullWidth
+                        placeholder="Nhập nhóm vật tư"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} sx={{ color: "red" }}>Hủy</Button>
+                    <Button onClick={() => addMaterialGroup(inputValue)} sx={{ bgcolor: "#8DB883", color: "#fff" }}>
+                        Thêm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={dialogType === "unit"} onClose={handleCloseDialog}>
+                <DialogTitle>Thêm đơn vị tính</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        fullWidth
+                        placeholder="Nhập đơn vị tính"
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} sx={{ color: "red" }}>Hủy</Button>
+                    <Button onClick={() => addMaterialUnit(inputValue)} sx={{ bgcolor: "#8DB883", color: "#fff" }}>
+                        Thêm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            </Box>
+        </>
+    )
+}
+
+export default UpdateMaterialModal;

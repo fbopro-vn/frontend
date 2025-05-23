@@ -1,0 +1,61 @@
+[    {
+  "page": "Trang chủ",
+  "url": "/",
+  "childrenPage": []
+},
+    {
+      "page": "Trello",
+      "url": "/trello",
+      "childrenPage": []
+    },
+    {
+      "page": "Vận hành sản xuất",
+      "url": "/qly_banhang",
+      "childrenPage": []
+    },
+    {
+      "page": "Kế toán",
+      "childrenPage": [
+        { "name": "Xử lý dữ liệu TMĐT", "url": "/ke-toan/xu-ly-du-lieu-tmdt" },
+        { "name": "Nhập thu", "url": "/ke-toan/nhap-thu" },
+        { "name": "Nhập chi", "url": "/ke-toan/nhap-chi" },
+        { "name": "Chấm công", "url": "/ke-toan/cham-cong" },
+        { "name": "Bảng lương", "url": "/ke-toan/bang-luong" },
+        { "name": "Theo dõi công nợ", "url": "/ke-toan/theo-doi-cong-no" }
+      ]
+    },
+    {
+      "page": "Bán hàng",
+      "childrenPage": [
+        { "name": "Danh mục sản phẩm", "url": "/ban-hang/danh-muc-san-pham" },
+        { "name": "Báo cáo bán hàng", "url": "/ban-hang/bao-cao-ban-hang" },
+        { "name": "Theo dõi công nợ", "url": "/ban-hang/theo-doi-cong-no" },
+        { "name": "Khách hàng", "url": "/ban-hang/khach-hang" },
+        { "name": "Tồn kho bán hàng", "url": "/ban-hang/ton-kho-ban-hang" }
+      ]
+    },
+    {
+      "page": "Sản xuất",
+      "childrenPage": [
+        { "name": "Part-time", "url": "/san-xuat/part-time" },
+        { "name": "Quy trình sản xuất", "url": "/san-xuat/quy-trinh-san-xuat" },
+        { "name": "Họp xưởng", "url": "/san-xuat/hop-xuong" },
+        { "name": "Tồn kho sản xuất", "url": "/san-xuat/ton-kho-san-xuat" }
+      ]
+    },
+    {
+      "page": "Văn bản quy định",
+      "childrenPage": [
+        { "name": "Quy định xưởng", "url": "/van-ban-quy-dinh/quy-dinh-xuong" },
+        { "name": "Quy định bán hàng", "url": "/van-ban-quy-dinh/quy-dinh-ban-hang" },
+        { "name": "Quy định chung", "url": "/van-ban-quy-dinh/quy-dinh-chung" }
+      ]
+    },
+    {
+      "page": "Đặt hàng",
+      "url": "/dat_hang",
+      "childrenPage": []
+    }
+    
+  ]
+  

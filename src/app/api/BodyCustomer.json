@@ -1,0 +1,82 @@
+[
+    {
+      "customer_id": "KH001",
+      "customer": "Nguyễn Văn A",
+      "phone": "0901234567",
+      "address": "200 Hoàng Hoa Thám, P.5, Quận 5, TP.HCM, Việt Nam",
+      "created_at": "9:54 01/04/2025",
+      "created_by": "Minh Công"
+    },
+    {
+      "customer_id": "KH002",
+      "customer": "Trần Thị B",
+      "phone": "0902345678",
+      "address": "Hồ Chí Minh, Việt Nam",
+      "created_at": "10:12 01/04/2025",
+      "created_by": "Kim Ngân"
+    },
+    {
+      "customer_id": "KH003",
+      "customer": "Lê Văn C",
+      "phone": "0903456789",
+      "address": "Đà Nẵng, Việt Nam",
+      "created_at": "11:00 01/04/2025",
+      "created_by": "Ngọc Anh"
+    },
+    {
+      "customer_id": "KH004",
+      "customer": "Phạm Thị D",
+      "phone": "0904567890",
+      "address": "Cần Thơ, Việt Nam",
+      "created_at": "11:30 01/04/2025",
+      "created_by": "Ngọc Anh"
+    },
+    {
+      "customer_id": "KH005",
+      "customer": "Hoàng Văn E",
+      "phone": "0905678901",
+      "address": "Hải Phòng, Việt Nam",
+      "created_at": "12:00 01/04/2025",
+      "created_by": "Minh Công"
+    },
+    {
+      "customer_id": "KH006",
+      "customer": "Bùi Thị Hạnh",
+      "phone": "0911111111",
+      "address": "Biên Hòa, Đồng Nai, Việt Nam",
+      "created_at": "13:00 01/04/2025",
+      "created_by": "Trung Kiên"
+    },
+    {
+      "customer_id": "KH007",
+      "customer": "Vũ Văn Tùng",
+      "phone": "0922222222",
+      "address": "Huế, Thừa Thiên Huế, Việt Nam",
+      "created_at": "13:30 01/04/2025",
+      "created_by": "Kim Ngân"
+    },
+    {
+      "customer_id": "KH008",
+      "customer": "Đặng Thị Mai",
+      "phone": "0933333333",
+      "address": "Vũng Tàu, Bà Rịa - Vũng Tàu, Việt Nam",
+      "created_at": "14:00 01/04/2025",
+      "created_by": "Minh Công"
+    },
+    {
+      "customer_id": "KH009",
+      "customer": "Ngô Văn Bình",
+      "phone": "0944444444",
+      "address": "Tây Ninh, Việt Nam",
+      "created_at": "14:30 01/04/2025",
+      "created_by": "Ngọc Anh"
+    },
+    {
+      "customer_id": "KH10",
+      "customer": "Lý Thị Hảo",
+      "phone": "0955555555",
+      "address": "Nam Định, Việt Nam",
+      "created_at": "15:00 01/04/2025",
+      "created_by": "Trung Kiên"
+    }
+  ]
