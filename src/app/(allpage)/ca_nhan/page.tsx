@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -11,14 +11,33 @@ import {
 } from '@mui/material';
 
 const ProfilesPage = () => {
-  // Thông tin User trong local
-  const infoUser = JSON.parse(localStorage.getItem('user') || "")
+  const [infoUser, setInfoUser] = useState<{ fullname: string; address: string; phone: string } | null>(null);
 
+  // Đọc localStorage khi component mount (chỉ client)
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setInfoUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  // Khởi tạo form khi infoUser đã có dữ liệu
   const [form, setForm] = useState({
-    fullName: infoUser.fullname,
-    address: infoUser.address,
-    phone: infoUser.phone,
+    fullName: '',
+    address: '',
+    phone: '',
   });
+
+  // Cập nhật form khi infoUser thay đổi
+  useEffect(() => {
+    if (infoUser) {
+      setForm({
+        fullName: infoUser.fullname,
+        address: infoUser.address,
+        phone: infoUser.phone,
+      });
+    }
+  }, [infoUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
@@ -31,6 +50,11 @@ const ProfilesPage = () => {
     e.preventDefault();
     console.log('Cập nhật:', form);
   };
+
+  if (!infoUser) {
+    // Có thể hiển thị loading hoặc null khi chưa lấy được dữ liệu user
+    return null;
+  }
 
   return (
     <Box sx={{ p: 4 }}>

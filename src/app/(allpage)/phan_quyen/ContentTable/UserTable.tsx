@@ -10,7 +10,6 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store/store';
-import User from '@/app/api/User/User.json'
 import removeVietnameseTones from '@/app/utils/removeVietnameseTones';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -36,8 +35,11 @@ import InfoUser from './DetailUser/InfoUser';
 import PermissionUser from './DetailUser/PermissionUser';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CancelIcon from '@mui/icons-material/Cancel';
+import useUserData from "@/app/hooks/useUserData";
 
-const ContentTable = ({ data }: { data: typeof User }) => {
+const ContentTable = () => {
+  const { userData, isLoading, error } = useUserData("http://api.sdc.com:8000/v1/users")
+
   const [searchText, setSearchText] = useState('');
   const checkedColumns = useSelector((state: RootState) => state.columnUser.checkedColumns); // Lấy checkedColumns từ Redux
   const [checkedRows, setCheckedRows] = useState<Record<string, boolean>>({});
@@ -67,25 +69,27 @@ const ContentTable = ({ data }: { data: typeof User }) => {
   
   const normalizedSearch = searchText.trim().toLowerCase();
 
-  const filteredData = User.filter(item => {
+
+  const filteredData = userData.filter(item => {
     const matchesSearch = Object.values(item).some(value =>
       removeVietnameseTones(String(value)).includes(removeVietnameseTones(normalizedSearch))
     );
     return matchesSearch;
   });
 
-  const handleToggleActive = (userId: string) => {
-    const updatedData = data.map(user =>
-      user._id === userId ? { ...user, is_active: !user.is_active } : user
-    );
+  console.log('dât', filteredData)
+  // const handleToggleActive = (userId: string) => {
+  //   const updatedData = data.map(user =>
+  //     user._id === userId ? { ...user, isActive: !user.isActive } : user
+  //   );
 
-    // Change page:
-    // Nếu bạn dùng setState để render lại UI:
-    // setData(updatedData); 👈 nếu có
-    // hoặc trigger mutate nếu dùng SWR
+  //   // Change page:
+  //   // Nếu bạn dùng setState để render lại UI:
+  //   // setData(updatedData); 👈 nếu có
+  //   // hoặc trigger mutate nếu dùng SWR
 
-    console.log("Updated trạng thái:", updatedData);
-  };
+  //   console.log("Updated trạng thái:", updatedData);
+  // };
 
   const [valuePage, setValuePage] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -121,8 +125,9 @@ const ContentTable = ({ data }: { data: typeof User }) => {
             <AddRoleModal open={openAddRole} onClose={() => setOpenAddRole(false)} />
           </Box>
           <AddUserModal />
-          <DeleteUserModal checkedRows={checkedRows} data={data} />
-          <UpdateUserModal checkedRows={checkedRows} data={data} />
+   <DeleteUserModal checkedRows={checkedRows} data={filteredData} />
+<UpdateUserModal checkedRows={checkedRows} data={filteredData} />
+
           {/*  */}
           <ColumnPopover headColumn={head_column} />
         </Box>
@@ -151,7 +156,7 @@ const ContentTable = ({ data }: { data: typeof User }) => {
                         color: "white",
                         fontSize: "16px",
                         fontWeight: "bold",
-                        textAlign: key === "birthday" || key === "is_active" || key === 'select' ? "center" : "left",
+                        textAlign: key === "birthday" || key === "isActive" || key === 'select' ? "center" : "left",
                         width: "auto", // Đảm bảo chiều rộng đồng nhất
                         minWidth: "100px", // Đảm bảo min-width cho các cột
                         maxWidth: "auto", // Đảm bảo max-width cho các cột
@@ -175,6 +180,7 @@ const ContentTable = ({ data }: { data: typeof User }) => {
                   bgcolor: rowIndex % 2 === 0 ? "white" : "#f9f9f9", cursor: 'pointer'
                 }}
               >
+  
                 {Object.keys(head_column).map((key, colIndex) => {
                   const isCheckbox = key === "select";
                   return (
@@ -182,21 +188,21 @@ const ContentTable = ({ data }: { data: typeof User }) => {
                       <TableCell
                         key={`${rowIndex}-${colIndex}`}
                         sx={{
-                          textAlign: isCheckbox || key === "birthday" || key === "is_active" ? "center" : "left",
+                          textAlign: isCheckbox || key === "birthday" || key === "isActive" ? "center" : "left",
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                         }}
-                        onClick={() => !isCheckbox && handleOpenDialog(row._id)} // ⚠️ Không click checkbox thì mới mở dialog
+                        onClick={() => !isCheckbox && handleOpenDialog(row.id)} // ⚠️ Không click checkbox thì mới mở dialog
                       >
                         {isCheckbox ? (
                           <Checkbox
-                            checked={!!checkedRows[row._id]}
-                            onChange={handleRowSelect(row._id)}
+                            checked={!!checkedRows[row.id]}
+                            onChange={handleRowSelect(row.id)}
                             sx={{ padding: 0 }}
                             onClick={(e) => e.stopPropagation()} // Ngăn lan sự kiện click
                           />
-                        ) : key === "is_active" ? (
+                        ) : key === "isActive" ? (
                           <Typography>{row[key] ? "Đang hoạt động" : "Ngừng hoạt động"}</Typography>
                         ) : (
                           typeof row[key] === "number"
@@ -273,7 +279,7 @@ const ContentTable = ({ data }: { data: typeof User }) => {
       </Tabs>
 
       {valuePage === 0 && <InfoUser _id={selectedUserId} />}
-      {valuePage === 1 && <PermissionUser user_id={selectedUserId} />}
+      {valuePage === 1 && <PermissionUser id={selectedUserId} />}
     </Box>
 
       {/* Footer */}
@@ -305,9 +311,9 @@ const head_column: { [key: string]: string } = {
   select: "Chọn",
   fullname: "Họ và tên",
   username: "Tên đăng nhập",
-  role_name: "Vai trò",
+  role: "Vai trò",
   phone: "Số điện thoại",
   email: "Email",
   birthday: "Ngày sinh",
-  is_active: "Trạng thái hoạt động"
+  isActive: "Trạng thái hoạt động"
 }

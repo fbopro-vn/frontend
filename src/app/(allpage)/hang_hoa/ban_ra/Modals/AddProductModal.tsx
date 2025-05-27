@@ -42,7 +42,7 @@ const AddProductModal: React.FC = () => {
     const handleClose = () => {
         setOpen(false)
     }
-    const {productData, error, isLoading} = useProductData();
+    const {productData, error, isLoading} = useProductData("http://api.sdc.com:8000/v1/products");
     const [dialogType, setDialogType] = useState<"" | "group" | "unit">("");
     const [inputValue, setInputValue] = useState("");
     const [loading, setLoading] = React.useState(false);
@@ -58,7 +58,7 @@ const AddProductModal: React.FC = () => {
     });
 
     // Xữ lý mã sản phẩm
-    const existingCodes = productData.map(item => item.id_product)
+    const existingCodes = productData.map(item => item.id)
     const generateNextProductCode = (existingCodes: string[]) => {
         if (existingCodes.length === 0) return "SP01"; // Nếu chưa có sản phẩm nào, bắt đầu từ SP01
 

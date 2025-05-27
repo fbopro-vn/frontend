@@ -14,7 +14,7 @@ const [value, setValue] = useState(null); // Quản lý giá trị được ch�
 const [inputValue, setInputValue] = useState(""); // Quản lý nội dung ô nhập
 
 // Gọi custom hook
-const { productData, error, isLoading } = useProductData();
+const { productData, error, isLoading } = useProductData("http://api.sdc.com:8000/v1/products");
 
 const handleSelectProduct = (product: Product) => {
   dispatch(addProduct(product));
@@ -39,10 +39,14 @@ const handleClose = () => setOpen(false);
       onChange={(_, newValue) => {
         if (newValue) {
           dispatch(addProduct({
-            id_product: newValue.id_product,
+            id: newValue.id,
             name: newValue.name,
+            group: newValue.group,
+            unit: newValue.unit,
             amount: 1,
+            costPrice: newValue.costPrice,
             salePrice: newValue.salePrice,
+            stockQuantity: newValue.stockQuantity
           }));
           setValue(null);
           setInputValue("");

@@ -16,7 +16,7 @@ import { ExpandMore, ExpandLess } from '@mui/icons-material'
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 
-const PermissionUser = ({ user_id }: { user_id: string }) => {
+const PermissionUser = ({ id }: { id: string }) => {
   const [value, setValue] = React.useState<string | null>(null);
   const [inputValue, setInputValue] = React.useState('');
 

@@ -30,7 +30,7 @@ const UnderTable = () => {
         <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} mb={2}>
           <Typography fontSize={"18px"} fontWeight={"bold"}>Tổng tiền hàng :</Typography>
           <Typography fontSize={"18px"} fontWeight={"bold"}>
-            {getTotalPriceProduct().toLocaleString()} VND
+            {getTotalPriceProduct().toLocaleString('vi-VN')} VND
           </Typography>
         </Box>
 
@@ -74,7 +74,7 @@ const UnderTable = () => {
             <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} mb={2}>
               <Typography fontSize={"18px"} fontWeight={"bold"} color={"#2E7D32"}>Khách hàng đã trả :</Typography>
               <Typography fontSize={"18px"} fontWeight={"bold"} color={"#2E7D32"}>
-                {getActiveOrderDeposit().toLocaleString()} VND
+                {getActiveOrderDeposit().toLocaleString('vi-VN')} VND
               </Typography>
             </Box>
             <Divider sx={{ my: 2 }} />
@@ -89,7 +89,7 @@ const UnderTable = () => {
           <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
             <Typography fontSize={"18px"} fontWeight={"bold"}>Khách hàng trả :</Typography>
             <Typography fontSize={"18px"} fontWeight={"bold"}>
-              {getTotalMoney().toLocaleString()} VND
+              {getTotalMoney().toLocaleString('vi-VN')} VND
             </Typography>
           </Box>
         )}

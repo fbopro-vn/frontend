@@ -9,11 +9,11 @@ const initialState: ColumnState = {
     "select",
     "username",
     "fullname",
-    "role_name",
+    "role",
     "pone",
     "email",
     "birthday",
-    "is_active",
+    "isActive",
   ], // Các cột mặc định được chọn
 };
 

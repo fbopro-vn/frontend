@@ -104,8 +104,8 @@ const CMerchandiseOutput = ({data}: {data: typeof BodyMerchandiseOutput}) => {
           >
             {key === "select" ? (
               <Checkbox
-                checked={!!checkedRows[row.product_id]}
-                onChange={handleRowSelect(row.product_id)}
+                checked={!!checkedRows[row.id]}
+                onChange={handleRowSelect(row.id)}
                 sx={{ padding: 0 }}
               />
             ) : (
@@ -132,7 +132,7 @@ export default CMerchandiseOutput;
 // Cấu hình cột và dữ liệu
 const head_column_product: { [key: string]: string } = {
   select: "Chọn",
-  product_id: "Mã sản phẩm",
+  id: "Mã sản phẩm",
   product: "Tên sản phẩm",
   product_group: 'Nhóm sản phẩm',
   unit: "Đơn vị tính",
@@ -144,7 +144,7 @@ const head_column_product: { [key: string]: string } = {
 
 const columnWidths: { [key: string]: string } = {
   select: "40px",
-  product_id: "100px",
+  id: "100px",
   created_at: "180px",
   product: "300px",
 };

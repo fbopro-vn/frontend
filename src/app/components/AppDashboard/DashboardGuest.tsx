@@ -158,30 +158,35 @@ const SlideTransition = React.forwardRef(function Transition(
 });
 
 export default function HomePage() {
-  const [registerStep, setRegisterStep] = useState(1);
+  // trạng thái dialog
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
-  const [companyCode, setCompanyCode] = useState('');
+
+  // trạng thái loading khi login/register
   const [loading, setLoading] = useState(false);
+
+  // Login form
+  const [companyCode, setCompanyCode] = useState('');
+
+  // Register form
   const [urlCompany, setUrlCompany] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [fullname, setfullname] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [birthday, setBirthday] = useState('');
 
   const resetRegisterForm = () => {
-    setRegisterStep(1);
     setUrlCompany('');
-    setCompanyName('');
-    setFullName('');
+    setfullname('');
     setUsername('');
     setPassword('');
     setConfirmPassword('');
     setEmail('');
     setPhone('');
+    setBirthday('');
   };
 
   const resetLoginForm = () => {
@@ -189,7 +194,7 @@ export default function HomePage() {
     setLoading(false);
   };
 
-  
+  // Xử lý login
   const handleLogin = async () => {
     if (!companyCode) return alert('Vui lòng nhập mã công ty');
 
@@ -203,9 +208,6 @@ export default function HomePage() {
         body: JSON.stringify({ companyCode: code }),
       });
 
-      const result = await res.json();
-      console.log('✅ Kết quả từ backend:', result);
-
       if (!res.ok) {
         alert('Công ty không tồn tại');
         setLoading(false);
@@ -214,58 +216,58 @@ export default function HomePage() {
 
       window.location.href = `http://${code}.fbopro.vn:3000/login`;
     } catch (err) {
-      console.error('❌ Lỗi khi gọi API:', err);
+      console.error('Lỗi khi gọi API:', err);
       alert('Không thể kết nối tới máy chủ');
       setLoading(false);
     }
   };
 
+  // Xử lý đăng ký gom 1 form
   const handleRegister = async () => {
+    if (!urlCompany || !fullname || !username || !password || !confirmPassword || !email || !phone || !birthday) {
+      alert("Vui lòng nhập đầy đủ tất cả các trường.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       alert("Mật khẩu không khớp.");
       return;
     }
 
+    setLoading(true);
+
     try {
-      const payload1 = {
-        companyCode: urlCompany,
-        companyName,
+      const payload = {
+        companyCode: urlCompany.toLowerCase(),
+          fullname,
+          username,
+          password,
+          email,
+          phone,
+          birthday
       };
 
-      const payload2 = {
-        fullName,
-        username,
-        password,
-        email,
-        phone,
-      };
+      const res = await fetch('http://api.sdc.com:8000/v1/users/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-      const [res1, res2] = await Promise.all([
-        fetch('http://api.sdc.com:8000/v1/companies', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload1),
-        }),
-        fetch('http://api.sdc.com:8000/v1/companies/admin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload2),
-        }),
-      ]);
-
-      const result1 = await res1.json();
-      const result2 = await res2.json();
-
-      if (!res1.ok || !res2.ok) {
-        throw new Error('Đăng ký thất bại');
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert('Đăng ký thất bại: ' + (errorData.message || ''));
+        setLoading(false);
+        return;
       }
 
       alert('Đăng ký thành công!');
       resetRegisterForm();
       setOpenRegister(false);
     } catch (err) {
-      console.error('❌ Lỗi khi đăng ký:', err);
+      console.error('Lỗi khi đăng ký:', err);
       alert('Đăng ký thất bại, vui lòng thử lại.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -276,13 +278,11 @@ export default function HomePage() {
 
         <Stack direction="row" spacing={2}>
           <Button variant="contained" onClick={() => setOpenLogin(true)}>Đăng nhập</Button>
-          <Button variant="outlined" onClick={() => { setRegisterStep(1); setOpenRegister(true); }}>Đăng ký</Button>
+          <Button variant="outlined" onClick={() => setOpenRegister(true)}>Đăng ký</Button>
         </Stack>
 
-        <Dialog open={openLogin} onClose={() => {
-            resetLoginForm();
-            setOpenLogin(false);
-          }} maxWidth="xs" fullWidth>
+        {/* Dialog Đăng nhập */}
+        <Dialog open={openLogin} onClose={() => { resetLoginForm(); setOpenLogin(false); }} maxWidth="xs" fullWidth>
           <Box sx={{ backgroundColor: 'white' }}>
             <DialogTitle sx={{ fontWeight: 'bold', pb: 0 }}>Đăng nhập tài khoản FBO</DialogTitle>
             <DialogContent sx={{ pt: 1 }}>
@@ -308,12 +308,7 @@ export default function HomePage() {
               <Box sx={{ mt: 2 }}>
                 <Typography variant="body2" sx={{ color: '#aaa' }}>
                   Bạn chưa có gian hàng trên FBO?{' '}
-                  <Button variant="text" sx={{ p: 0, color: '#4fc3f7' }} onClick={() => {
-                    resetLoginForm();
-                    setOpenLogin(false);
-                    setRegisterStep(1);
-                    setOpenRegister(true);
-                  }}>
+                  <Button variant="text" sx={{ p: 0, color: '#4fc3f7' }} onClick={() => { resetLoginForm(); setOpenLogin(false); setOpenRegister(true); }}>
                     Dùng thử miễn phí
                   </Button>
                 </Typography>
@@ -337,12 +332,10 @@ export default function HomePage() {
           </Box>
         </Dialog>
 
+        {/* Dialog Đăng ký */}
         <Dialog
           open={openRegister}
-          onClose={() => {
-            resetRegisterForm();
-            setOpenRegister(false);
-          }}
+          onClose={() => { resetRegisterForm(); setOpenRegister(false); }}
           maxWidth="lg"
           fullWidth
           scroll="paper"
@@ -363,58 +356,233 @@ export default function HomePage() {
             </Box>
 
             <Box flex="1.2" p={5} bgcolor="#fff" display="flex" flexDirection="column" justifyContent="space-between" minHeight="600px">
-              <Box flex={1} display="flex" flexDirection="column" justifyContent="center">
+              <Box flex={1} display="flex" flexDirection="column" justifyContent="center" gap={2}>
                 <DialogTitle sx={{ fontWeight: 'bold', fontSize: 22, px: 0 }}>
-                  Đăng ký công ty
+                  Đăng ký công ty và tài khoản quản trị
                 </DialogTitle>
-                <DialogContent sx={{ px: 0, pt: 1 }}>
-                  <Stack spacing={2} sx={{ transition: 'all 0.3s ease-out' }}>
-                    {registerStep === 1 && (
-                      <>
-                        <TextField label="Đường dẫn công ty" fullWidth value={urlCompany} onChange={(e) => setUrlCompany(e.target.value)} />
-                        <TextField label="Tên công ty" fullWidth value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
-                      </>
-                    )}
-                    {registerStep === 2 && (
-                      <>
-                        <TextField label="Họ và tên" fullWidth value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                        <TextField label="Tên đăng nhập" fullWidth value={username} onChange={(e) => setUsername(e.target.value)} />
-                        <TextField label="Mật khẩu" type="password" fullWidth value={password} onChange={(e) => setPassword(e.target.value)} />
-                        <TextField label="Nhập lại mật khẩu" type="password" fullWidth value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                        <TextField label="Email" type="email" fullWidth value={email} onChange={(e) => setEmail(e.target.value)} />
-                        <TextField label="Số điện thoại" fullWidth value={phone} onChange={(e) => setPhone(e.target.value)} />
-                      </>
-                    )}
-                  </Stack>
-                </DialogContent>
+               <DialogContent sx={{ px: 0, pt: 1 }}>
+  <Stack
+    spacing={2}               // Khoảng cách giữa các input
+    sx={{
+      maxWidth: 400,          // Giới hạn chiều rộng form (tùy chỉnh)
+      margin: 'auto',         // Căn giữa form
+    }}
+  >
+   <TextField
+  fullWidth
+  value={urlCompany}
+  onChange={(e) => setUrlCompany(e.target.value)}
+  placeholder="Đường dẫn công ty"
+  sx={{
+    '& .MuiInputBase-root': {
+      height: 38,           // Độ cao input phù hợp
+      fontSize: 14,         // Cỡ chữ trong input
+    // Padding trái để chữ không sát mép
+      borderRadius: 1,      // Bo góc nhẹ
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 600,      // Đậm chữ label
+      fontSize: 15,
+      color: '#333',
+    },
+    '& .MuiInputBase-input::placeholder': {
+      opacity: 0.6,         // Độ mờ placeholder vừa phải
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  }}
+/>
+
+    <TextField
+     placeholder="Họ và tên"
+      fullWidth
+      value={fullname}
+      onChange={(e) => setfullname(e.target.value)}
+      sx={{
+      '& .MuiInputBase-root': {
+        height: 38,           // Độ cao input phù hợp
+        fontSize: 14,         // Cỡ chữ trong input
+      // Padding trái để chữ không sát mép
+        borderRadius: 1,      // Bo góc nhẹ
+      },
+      '& .MuiInputLabel-root': {
+        fontWeight: 600,      // Đậm chữ label
+        fontSize: 15,
+        color: '#333',
+      },
+      '& .MuiInputBase-input::placeholder': {
+        opacity: 0.6,         // Độ mờ placeholder vừa phải
+        fontSize: 14,
+        fontWeight: 400,
+      },
+  }}
+    />
+    <TextField
+    placeholder="Tên đăng nhập"
+      fullWidth
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+      sx={{
+    '& .MuiInputBase-root': {
+      height: 38,           // Độ cao input phù hợp
+      fontSize: 14,         // Cỡ chữ trong input
+    // Padding trái để chữ không sát mép
+      borderRadius: 1,      // Bo góc nhẹ
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 600,      // Đậm chữ label
+      fontSize: 15,
+      color: '#333',
+    },
+    '& .MuiInputBase-input::placeholder': {
+      opacity: 0.6,         // Độ mờ placeholder vừa phải
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  }}
+    />
+    <TextField
+      placeholder="Mật khẩu"
+      type="password"
+      fullWidth
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      sx={{
+    '& .MuiInputBase-root': {
+      height: 38,           // Độ cao input phù hợp
+      fontSize: 14,         // Cỡ chữ trong input
+    // Padding trái để chữ không sát mép
+      borderRadius: 1,      // Bo góc nhẹ
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 600,      // Đậm chữ label
+      fontSize: 15,
+      color: '#333',
+    },
+    '& .MuiInputBase-input::placeholder': {
+      opacity: 0.6,         // Độ mờ placeholder vừa phải
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  }}
+    />
+    <TextField
+      placeholder="Nhập lại mật khẩu"
+      type="password"
+      fullWidth
+      value={confirmPassword}
+      onChange={(e) => setConfirmPassword(e.target.value)}
+      sx={{
+    '& .MuiInputBase-root': {
+      height: 38,           // Độ cao input phù hợp
+      fontSize: 14,         // Cỡ chữ trong input
+    // Padding trái để chữ không sát mép
+      borderRadius: 1,      // Bo góc nhẹ
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 600,      // Đậm chữ label
+      fontSize: 15,
+      color: '#333',
+    },
+    '& .MuiInputBase-input::placeholder': {
+      opacity: 0.6,         // Độ mờ placeholder vừa phải
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  }}
+    />
+    <TextField
+    placeholder="Email"
+      type="email"
+      fullWidth
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      sx={{
+    '& .MuiInputBase-root': {
+      height: 38,           // Độ cao input phù hợp
+      fontSize: 14,         // Cỡ chữ trong input
+    // Padding trái để chữ không sát mép
+      borderRadius: 1,      // Bo góc nhẹ
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 600,      // Đậm chữ label
+      fontSize: 15,
+      color: '#333',
+    },
+    '& .MuiInputBase-input::placeholder': {
+      opacity: 0.6,         // Độ mờ placeholder vừa phải
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  }}
+    />
+    <TextField
+    placeholder="Số điện thoại"
+      fullWidth
+      value={phone}
+      onChange={(e) => setPhone(e.target.value)}
+      sx={{
+    '& .MuiInputBase-root': {
+      height: 38,           // Độ cao input phù hợp
+      fontSize: 14,         // Cỡ chữ trong input
+    // Padding trái để chữ không sát mép
+      borderRadius: 1,      // Bo góc nhẹ
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 600,      // Đậm chữ label
+      fontSize: 15,
+      color: '#333',
+    },
+    '& .MuiInputBase-input::placeholder': {
+      opacity: 0.6,         // Độ mờ placeholder vừa phải
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  }}
+    />
+    <TextField
+      type="date"
+      fullWidth
+      value={birthday}
+      onChange={(e) => setBirthday(e.target.value)}
+      sx={{
+    '& .MuiInputBase-root': {
+      height: 38,           // Độ cao input phù hợp
+      fontSize: 14,         // Cỡ chữ trong input
+    // Padding trái để chữ không sát mép
+      borderRadius: 1,      // Bo góc nhẹ
+    },
+    '& .MuiInputLabel-root': {
+      fontWeight: 600,      // Đậm chữ label
+      fontSize: 15,
+      color: '#333',
+    },
+    '& .MuiInputBase-input::placeholder': {
+      opacity: 0.6,         // Độ mờ placeholder vừa phải
+      fontSize: 14,
+      fontWeight: 400,
+    },
+  }}
+      InputLabelProps={{ shrink: true }} // Để label không chồng lên date picker
+    />
+  </Stack>
+</DialogContent>
+
               </Box>
 
               <DialogActions sx={{ px: 0, pt: 3 }}>
-                <Button onClick={() => {
-                  if (registerStep === 1) {
-                    resetRegisterForm();
-                    setOpenRegister(false);
-                  } else {
-                    setRegisterStep(1);
-                  }
-                }} color="inherit">
-                  {registerStep === 1 ? 'Hủy' : 'Quay lại'}
+                <Button onClick={() => { resetRegisterForm(); setOpenRegister(false); }} color="inherit">
+                  Hủy
                 </Button>
 
-                {registerStep === 1 ? (
-                  <Button variant="contained" onClick={() => {
-                    if (!urlCompany || !companyName) return alert('Vui lòng nhập đầy đủ thông tin công ty');
-                    setRegisterStep(2);
-                  }}
-                    sx={{ bgcolor: '#1976d2', '&:hover': { bgcolor: '#1565c0' }, color: '#fff' }}>
-                    Tiếp tục
-                  </Button>
-                ) : (
-                  <Button variant="contained" onClick={handleRegister}
-                    sx={{ bgcolor: '#1976d2', '&:hover': { bgcolor: '#1565c0' }, color: '#fff' }}>
-                    Đăng ký
-                  </Button>
-                )}
+                <Button
+                  variant="contained"
+                  onClick={handleRegister}
+                  sx={{ bgcolor: '#1976d2', '&:hover': { bgcolor: '#1565c0' }, color: '#fff' }}
+                  disabled={loading}
+                >
+                  {loading ? <CircularProgress size={20} color="inherit" /> : 'Đăng ký'}
+                </Button>
               </DialogActions>
             </Box>
           </Box>

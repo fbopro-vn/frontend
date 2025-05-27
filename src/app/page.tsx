@@ -82,7 +82,7 @@ const Home = () => {
           }
         });
   
-        console.log("Kiểm tra người dùng", res.data);
+        // console.log("Kiểm tra người dùng", res.data);
   
         // 👉 Lưu user info vào localStorage
         localStorage.setItem("user", JSON.stringify(res.data));

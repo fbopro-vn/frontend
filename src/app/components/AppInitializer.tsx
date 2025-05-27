@@ -12,7 +12,7 @@ export default function AppInitializer() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = Cookies.get('access_token');
+    const token = localStorage.getItem('access_token');
     if (!token) {
       dispatch(clearUser());
       return;
@@ -28,7 +28,7 @@ export default function AppInitializer() {
     })
     .catch(error => {
       console.error('Không lấy được user:', error);
-      Cookies.remove('access_token');
+      localStorage.remove('access_token');
       dispatch(clearUser());
       router.push('/login');
     });

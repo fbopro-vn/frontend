@@ -4,8 +4,9 @@ import { Box, Modal, Typography, TextField, Button } from "@mui/material";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { mutate } from "swr";
 import CircularProgress from "@mui/material/CircularProgress";
+import useCustomerData from "@/app/hooks/useCustomerData";
+import { toast } from "react-toastify";
 
 // Định nghĩa kiểu dữ liệu cho form
 interface Inputs {
@@ -25,7 +26,7 @@ const AddCustomerModal: React.FC = () => {
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
-
+    const { mutate } = useCustomerData('http://api.sdc.com:8000/v1/customers')
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
@@ -60,7 +61,8 @@ const AddCustomerModal: React.FC = () => {
                 "Authorization": `Bearer ${token}` // Thêm token vào header Authorization
             }
         });
-            mutate("http://api.sdc.com:8000/v1/customers")
+            toast.success("Thêm khách hàng thành công!");
+            mutate()
             handleClose();
         } catch (err) {
             console.error("Lỗi khi lưu khách hàng", err);

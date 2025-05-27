@@ -1,56 +1,78 @@
+'use client'
 import React, { useState, useEffect } from "react";
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import { Box, Typography } from "@mui/material";
 import { useOrderContext } from "@/app/context/OrderContext"; // ✅ Import Context
 import useUserData from "@/app/hooks/useUserData";
 
-
 export default function SearchStaff() {
-  const { orders, updateOrderDate, getActiveOrderSeller, updateActiveOrderSeller, activeOrderId } = useOrderContext(); // ✅ Lấy hàm cập nhật thời gian từ Context
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleString()); // State lưu thời gian
-  const [inputValue, setInputValue] = useState(""); // Giữ nội dung nhập
+  const {
+    updateOrderDate,
+    getActiveOrderSeller,
+    updateActiveOrderSeller,
+    activeOrderId,
+  } = useOrderContext();
+
+  const { userData } = useUserData("http://api.sdc.com:8000/v1/users");
+
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
+  const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
 
-  const { userData, error, isLoading } = useUserData("http://api.sdc.com:8000/v1/users",);
-  // ✅ Cập nhật thời gian real-time mỗi giây
+  // ⏰ Cập nhật thời gian mỗi giây
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
-
-      // Format ngày tháng theo chuẩn "DD/MM/YYYY HH:mm:ss"
       const formattedDate = now.toLocaleDateString("vi-VN", {
         day: "2-digit",
         month: "2-digit",
-        year: "numeric"
+        year: "numeric",
       });
-
       const formattedTime = now.toLocaleTimeString("vi-VN");
-
       const formattedDateTime = `${formattedTime} ${formattedDate}`;
+      setCurrentTime(formattedDateTime);
+      updateOrderDate(formattedDateTime);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [updateOrderDate]);
 
-      setCurrentTime(formattedDateTime); // ✅ Cập nhật state hiển thị thời gian
-      updateOrderDate(formattedDateTime); // ✅ Cập nhật vào OrderContext
-    }, 1000); // Cập nhật mỗi giây
+   useEffect(() => {
+     const interval = setInterval(() => {
+       const now = new Date();
+       const formattedDate = now.toLocaleDateString("vi-VN", {
+         day: "2-digit",
+         month: "2-digit",
+         year: "numeric",
+       });
+       const formattedTime = now.toLocaleTimeString("vi-VN");
+       const formattedDateTime = `${formattedTime} ${formattedDate}`;
+       setCurrentTime(formattedDateTime);
+       updateOrderDate(formattedDateTime);
+     }, 1000);
+ 
+     return () => clearInterval(interval);
+   }, [updateOrderDate]);
 
-    return () => clearInterval(interval); // Xóa interval khi component unmount
-  }, [updateOrderDate]); // 🔹 Chỉ re-run khi `updateOrderDate` thay đổi
+  const loginUser =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("user") || "{}")
+      : {};
 
-  // ✅ 2. Cập nhật `seller` khi chuyển tab
+  // ✅ Khi đổi đơn hàng, gán lại inputValue và context seller nếu cần
   useEffect(() => {
     const activeSeller = getActiveOrderSeller();
-    // console.log("📌 Chuyển tab - Lấy seller mới:", activeseller);
 
-    // Kiểm tra nếu giá trị hiển thị không đúng thì cập nhật lại
-    if (activeSeller?.fullname !== inputValue) {
-      setInputValue(activeSeller?.fullname || "");
+    if (activeSeller?.fullname && activeSeller.fullname.trim() !== "") {
+      setInputValue(activeSeller.fullname);
+    } else if (loginUser?.fullname) {
+      setInputValue(loginUser.fullname);
+      updateActiveOrderSeller({
+        id: loginUser.id,
+        fullname: loginUser.fullname,
+      });
     }
-
-    setOpen(false); // Đóng popup khi chuyển tab
-  }, [activeOrderId]); // 🔥 Chỉ chạy khi đổi tab
-
-
-
+  }, [activeOrderId]);
   return (
     <Box
       sx={{
@@ -60,7 +82,7 @@ export default function SearchStaff() {
         borderRadius: "5px",
         padding: "5px",
         width: 520,
-        height: 30
+        height: 30,
       }}
     >
       {/* SALE Text */}
@@ -71,7 +93,7 @@ export default function SearchStaff() {
           fontWeight: "bold",
           marginRight: "10px",
           whiteSpace: "nowrap",
-          mt: "2px"
+          mt: "2px",
         }}
       >
         SALE:
@@ -83,6 +105,8 @@ export default function SearchStaff() {
         options={userData}
         getOptionLabel={(option) => option.fullname} // Hiển thị fullname thay vì name
         open={open}
+        onOpen={() => setOpen(true)} // ✅ Tự mở khi click vào input
+        onClose={() => setOpen(false)}
         value={userData.find((s) => s.fullname === inputValue) || null} // Đảm bảo luôn hiển thị đúng seller
         inputValue={inputValue}
         onInputChange={(_, newValue) => {
@@ -102,12 +126,13 @@ export default function SearchStaff() {
             sx: {
               width: "400px !important",
               maxWidth: "none",
-            }
-          }
+            },
+          },
         }}
         renderInput={(params) => (
           <TextField
             {...params}
+            onFocus={() => setOpen(true)}
             sx={{
               "& .MuiInputBase-root": {
                 height: 30,
@@ -132,7 +157,6 @@ export default function SearchStaff() {
           />
         )}
       />
-
 
       {/* TIME Text */}
       <Typography

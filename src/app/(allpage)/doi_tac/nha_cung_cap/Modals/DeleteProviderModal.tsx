@@ -9,7 +9,7 @@ import BodyProvider from '@/app/api/BodyProvider.json'
 
 const DeleteProviderModal = ({
   checkedRows, data }: {
-      checkedRows: Record<string, boolean> // ✅ key là product_id
+      checkedRows: Record<string, boolean> // ✅ key là id
       data: typeof BodyProvider;
   }) => {
 
@@ -17,9 +17,9 @@ const DeleteProviderModal = ({
     const [select, setSelect] = useState(false);
     
     // ✅ Lấy index các dòng được chọn
-    // ✅ Lọc danh sách sản phẩm được chọn theo product_id
+    // ✅ Lọc danh sách sản phẩm được chọn theo id
   const selectedProducts = data.filter((item) => checkedRows[item.provider_id])
-  const selectedProductIds = selectedProducts.map((item) => item.provider_id)
+  const selectedids = selectedProducts.map((item) => item.provider_id)
   return (
     <Box>
       <Button 
@@ -56,7 +56,7 @@ const DeleteProviderModal = ({
                         <Box display="flex" alignItems="center" gap={1} mb={1}>
                             <DeleteForeverOutlinedIcon sx={{ color: '#d63031' }} />
                             <Typography fontWeight="bold" color="#d63031" fontSize="16px">
-                                Bạn đang xóa {selectedProductIds.length} sản phẩm:
+                                Bạn đang xóa {selectedids.length} sản phẩm:
                             </Typography>
                         </Box>
 
@@ -70,7 +70,7 @@ const DeleteProviderModal = ({
                                 border: "1px solid #eee",
                             }}
                         >
-                            {selectedProductIds.map((id, idx) => (
+                            {selectedids.map((id, idx) => (
                                 <Typography
                                     key={idx}
                                     sx={{

@@ -38,7 +38,7 @@ const  AddMaterialModal: React.FC<AddMaterialModalProps> = ({open, handleClose})
         reset
     } = useForm<Product>(); // Xác định kiểu dữ liệu cho form
     
-    const {productData, error, isLoading} = useProductData();
+    const {productData, error, isLoading} = useProductData("http://api.sdc.com:8000/v1/products");
     const [dialogType, setDialogType] = useState<"" | "group" | "unit">("");
     const [inputValue, setInputValue] = useState("");
     const [loading, setLoading] = useState(false);
@@ -46,7 +46,7 @@ const  AddMaterialModal: React.FC<AddMaterialModalProps> = ({open, handleClose})
 
 
     // Xữ lý mã vật tư
-    const existingCodes = productData.map(item => item.id_product)
+    const existingCodes = productData.map(item => item.id)
     const generateNextMaterialCode = (existingCodes: string[]) => {
         if (existingCodes.length === 0) return "SP01"; // Nếu chưa có vật tư nào, bắt đầu từ SP01
 

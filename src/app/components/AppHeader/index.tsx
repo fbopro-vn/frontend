@@ -27,9 +27,10 @@ import { useDispatch, useSelector } from 'react-redux'
 const AppHeader = () => {
     const user = useSelector((state: RootState) => state.user.user);
     const role = user?.role;
-    // const isAdmin = role === 'admin';
-    // const isAccountant = role === 'accountant';
-    // const isSaleOrAccountant = role === 'sale' || role === 'accountant';
+    // console.log('Người dùng hiện tại', user)
+    const isAdmin = role === 'admin';
+    const isAccountant = role === 'accountant';
+    const isSaleOrAccountant = role === 'sale' || role === 'accountant';
 
     const pathname = usePathname();
     const isActive = getActiveMenuKey(pathname);
@@ -122,14 +123,14 @@ const AppHeader = () => {
                             Tổng quan
                         </Button>
                     </Link>
-                    {/* {isAdmin && <Merchandise />}
+                    {isAdmin && <Merchandise />}
                     {isAdmin && <Transaction />}
                     {isAdmin && <Partner />}
-                    {(isAdmin || isAccountant) && <Accountant />} */}
-                    {<Merchandise />}
+                    {(isAdmin || isAccountant) && <Accountant />}
+                    {/* {<Merchandise />}
                     {<Transaction />}
                     {<Partner />}
-                    {<Accountant />}
+                    {<Accountant />} */}
                     {/* <Merchandise/>
                     <Transaction />
                     <Partner />

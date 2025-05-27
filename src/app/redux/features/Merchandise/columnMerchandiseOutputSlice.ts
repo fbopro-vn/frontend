@@ -7,7 +7,7 @@ interface ColumnState {
 const initialState: ColumnState = {
   checkedColumns: [
     "select",
-    "product_id",
+    "id",
     "product",
     "product_group",
     "unit",

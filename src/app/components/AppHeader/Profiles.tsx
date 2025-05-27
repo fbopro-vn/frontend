@@ -17,9 +17,33 @@ import Logout from '@mui/icons-material/Logout';
 import SettingsSuggestOutlinedIcon from '@mui/icons-material/SettingsSuggestOutlined';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/redux/store/store';
-
+import { useRouter } from 'next/navigation'
 
 const Profiles = () => {
+  const router = useRouter();
+const handleLogout = () => {
+  const storedUser = localStorage.getItem('user');
+  let userId = null;
+
+  if (storedUser) {
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      userId = parsedUser?.id;
+    } catch (err) {
+      console.error("❌ Lỗi khi parse user:", err);
+    }
+  }
+
+  // Tạm thời là như vậy. Sau này phát triển theo kiểu đăng xuất và đăng nhập lại vẫn thấy session.
+  localStorage.removeItem('access_token');
+  if (userId) {
+    localStorage.removeItem(`session_id_${userId}`);
+    localStorage.removeItem(`orderState-session-${userId}`);
+  }
+  localStorage.removeItem('user'); // ✅ optional
+
+  router.push('/login');
+};
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,8 +56,8 @@ const Profiles = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const role = user?.role;
 
-  // const isAdmin = role === 'admin';
-  // const isSaleOrAccountant = role === 'sale' || role === 'ketoan';
+  const isAdmin = role === 'admin';
+  const isSaleOrAccountant = role === 'sale' || role === 'accountant';
 
   return (
     <Box>
@@ -65,7 +89,7 @@ const Profiles = () => {
           },
         }}
       >
-        {/* {(isAdmin || isSaleOrAccountant) && (
+        {(isAdmin || isSaleOrAccountant) && (
           <MenuItem component={Link} href="/ca_nhan">
             <Avatar sx={{ width: 28, height: 28, mr: 2 }} />
             Thông tin cá nhân
@@ -97,15 +121,17 @@ const Profiles = () => {
 
         {(isAdmin || isSaleOrAccountant) && [
           <Divider key="divider2" />,
-          <MenuItem key="logout" component={Link} href="/logout">
+          <MenuItem key="logout"  onClick={handleLogout}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
             Đăng xuất
           </MenuItem>,
-        ]} */}
+        ]}
 
-          <MenuItem component={Link} href="/ca_nhan">
+
+{/* Cũ */}
+          {/* <MenuItem component={Link} href="/ca_nhan">
             <Avatar sx={{ width: 28, height: 28, mr: 2 }} />
             Thông tin cá nhân
           </MenuItem>
@@ -131,12 +157,12 @@ const Profiles = () => {
           </MenuItem>
 
           <Divider key="divider2" />
-          <MenuItem key="logout" component={Link} href="/logout">
+          <MenuItem key="logout" onClick={handleLogout}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
             Đăng xuất
-          </MenuItem>
+          </MenuItem> */}
   
       </Menu>
     </Box>

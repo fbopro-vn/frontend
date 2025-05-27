@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Product {
-  id_product: string;
+  id: string;
   name: string;
   group: string;
-  unit: number;
+  unit: string;
   amount: number;
   salePrice: number;
   costPrice: number;
+  stockQuantity: number;
 }
 
 interface CartState {

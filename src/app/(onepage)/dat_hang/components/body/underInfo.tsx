@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useRef, useState } from "react";
 import { useOrderContext } from "@/app/context/OrderContext";
 import {
@@ -8,7 +8,7 @@ import {
   Button,
   Select,
   MenuItem,
-  Switch
+  Switch,
 } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 import { SelectChangeEvent } from "@mui/material";
@@ -17,11 +17,8 @@ import useCartData from "@/app/hooks/useCartData";
 import usePaginatedCartData from "@/app/hooks/usePaginatedCartData";
 import "@/app/components/css_animation/loaderOther.css";
 
-
-
 const UnderInfo = () => {
-
-  const { mutate } = useCartData("http://api.sdc.com:8000/v1/orders/cart")
+  const { mutate } = useCartData("http://api.sdc.com:8000/v1/orders/cart");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const depositInputRef = useRef<HTMLInputElement | null>(null);
   const {
@@ -42,15 +39,16 @@ const UnderInfo = () => {
     // addSpecificOrder,
     updateActiveOrderSeller,
     getTotalPriceProduct,
-    getVatPrice
+    getActiveOrderPaidPayment,
+    updateActiveOrderPaidPayment,
   } = useOrderContext();
   const label = { inputProps: { "aria-label": "Switch demo" } };
-  const [paidPayment, setPaidPayment] = useState<number>(0);
+  const paidPayment = getActiveOrderPaidPayment();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+
   const customerPaid = getActiveOrderDeposit(); // Tùy bạn lấy tiền đặt cọc hay tiền đã trả
   const customerMustPay = getTotalMoney() - customerPaid;
-  const remainingPayment = customerMustPay - paidPayment
+  const remainingPayment = customerMustPay - paidPayment;
   // OK
   // const handleOrderSubmit = async (): Promise<void> => {
   //   const orderData = getFilteredOrder(); // Lấy dữ liệu cần gửi
@@ -101,18 +99,20 @@ const UnderInfo = () => {
   //   }
   // };
 
-
   // Đặt hàng
   const handleOrderSubmit = async (): Promise<void> => {
     const orderData = getFilteredOrder(paidPayment); // Lấy dữ liệu cần gửi
     if (!validateOrderErrors("order")) return;
 
-
     console.log("Dữ liệu gửi đi", orderData);
     setIsLoading(true); // Bật spinner
 
     // Lấy access_token từ localStorage hoặc sessionStorage
-    const accessToken = localStorage.getItem('access_token');
+    let accessToken = "";
+    if (typeof window !== "undefined") {
+      accessToken = localStorage.getItem("access_token") || "";
+    }
+
     if (!accessToken) {
       toast.error("❌ Không tìm thấy access token!");
       setIsLoading(false);
@@ -121,14 +121,14 @@ const UnderInfo = () => {
 
     if (activeOrderId) {
       try {
-        const response = await fetch('http://api.sdc.com:8000/v1/orders', {
-          method: 'POST',
+        const response = await fetch("http://api.sdc.com:8000/v1/orders", {
+          method: "POST",
           headers: {
-            'Accept': 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`, // Thêm token vào header
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`, // Thêm token vào header
           },
-          body: JSON.stringify(orderData)
+          body: JSON.stringify(orderData),
         });
 
         const resData = await response.json();
@@ -147,43 +147,46 @@ const UnderInfo = () => {
     }
   };
 
-
   // Thanh toán
   const handlerOrderPay = async (): Promise<void> => {
     const invoiceData = getFilteredInvoice(paidPayment);
     if (!validateOrderErrors("checkout")) return;
 
-
-    setIsLoading(true) // Thêm spiner
+    setIsLoading(true); // Thêm spiner
     // Dữ liệu gửi qua
-    console.log("Dữ liệu gửi qua", invoiceData)
+    console.log("Dữ liệu gửi qua", invoiceData);
     if (activeOrderId) {
       try {
-        const response = await fetch(`http://api.sdc.com:8000/v1/orders/${activeOrderId}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem("access_token")}`, // Lấy token từ localStorage
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(invoiceData)
-        });
+        const response = await fetch(
+          `http://api.sdc.com:8000/v1/orders/${activeOrderId}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`, // Lấy token từ localStorage
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(invoiceData),
+          }
+        );
 
         const resData = await response.json();
-        console.log(">>>> check REsdata", resData)
+        console.log(">>>> check REsdata", resData);
         if (resData) {
           // mutate("http://api.sdc.com:8000/v1/orders");
           // mutate("http://api.sdc.com:8000/v1/orders/cart");
           removeOrder(activeOrderId);
-          mutate()
+          mutate();
         }
       } catch (error) {
         toast.error("❌ Lỗi khi thanh toán!");
         console.error("Lỗi khi thanh toán:", error);
-      } finally { setIsLoading(false) } // Thêm spiner}
+      } finally {
+        setIsLoading(false);
+      } // Thêm spiner}
     }
-  }
+  };
 
-  // Lưu 
+  // Lưu
   const handleUpdate = async (): Promise<void> => {
     if (!activeOrderId) return;
 
@@ -194,9 +197,8 @@ const UnderInfo = () => {
     try {
       const updated = await updateOrderInCart(activeOrderId, paidPayment);
       if (updated) {
-        setPaidPayment(0);
         removeOrder(activeOrderId);
-        mutate('http://api.sdc.com:8000/v1/orders/cart'); // Refresh lại cache nếu dùng swr
+        mutate("http://api.sdc.com:8000/v1/orders/cart"); // Refresh lại cache nếu dùng swr
       } else {
         toast.error("❌ Lỗi khi lưu đơn hàng!");
       }
@@ -207,8 +209,6 @@ const UnderInfo = () => {
       setIsLoading(false);
     }
   };
-
- 
 
   return (
     // Goc
@@ -242,15 +242,20 @@ const UnderInfo = () => {
               Khách thanh toán
             </Typography>
             <NumericFormat
-              value={paidPayment}  // Luôn là 0
-              onValueChange={(valueObj) => setPaidPayment(Number(valueObj.value) || 0)}
+              value={paidPayment} // Luôn là 0
+              onValueChange={(valueObj) =>
+                updateActiveOrderPaidPayment(Number(valueObj.value) || 0)
+              }
               onFocus={() => {
                 setTimeout(() => {
                   if (inputRef.current) inputRef.current.select();
                 }, 0);
               }}
               getInputRef={(el: HTMLElement | null) => {
-                inputRef.current = el instanceof HTMLInputElement ? el : el?.querySelector("input") ?? null;
+                inputRef.current =
+                  el instanceof HTMLInputElement
+                    ? el
+                    : el?.querySelector("input") ?? null;
               }}
               customInput={TextField}
               thousandSeparator="."
@@ -272,7 +277,6 @@ const UnderInfo = () => {
             />
           </Box>
         )}
-
 
         {/* Nếu là Đặt hàng (Cọc) */}
         {!isCheckoutMode && (
@@ -338,8 +342,12 @@ const UnderInfo = () => {
               updateOrderField("paymentMethod", event.target.value)
             }
           >
-            <MenuItem value="Chuyển khoản cá nhân">Chuyển khoản cá nhân</MenuItem>
-            <MenuItem value="Chuyển khoản công ty">Chuyển khoản công ty</MenuItem>
+            <MenuItem value="Chuyển khoản cá nhân">
+              Chuyển khoản cá nhân
+            </MenuItem>
+            <MenuItem value="Chuyển khoản công ty">
+              Chuyển khoản công ty
+            </MenuItem>
             <MenuItem value="Tiền mặt">Tiền mặt</MenuItem>
           </Select>
         </Box>
@@ -352,17 +360,20 @@ const UnderInfo = () => {
             Thu hộ (COD)
           </Typography>
           <Switch
-  checked={getActiveOrderPaymentStatus()}
-  onChange={() => {
-    const nextStatus = getActiveOrderPaymentStatus() ? "Công nợ" : "Chờ thanh toán";
-    updateOrderField("paymentStatus", nextStatus);
-  }}
-/>
-
+            checked={getActiveOrderPaymentStatus()}
+            onChange={() => {
+              const nextStatus = getActiveOrderPaymentStatus()
+                ? "Công nợ"
+                : "Chờ thanh toán";
+              updateOrderField("paymentStatus", nextStatus);
+            }}
+          />
         </Box>
 
         <Box sx={{ color: "green" }}>
-          <Typography variant="body1" fontWeight="bold">Trạng Thái Thanh Toán:</Typography>
+          <Typography variant="body1" fontWeight="bold">
+            Trạng Thái Thanh Toán:
+          </Typography>
 
           {isCheckoutMode ? (
             <Typography
@@ -370,18 +381,22 @@ const UnderInfo = () => {
               fontWeight="bold"
               sx={{
                 color:
-                  (remainingPayment <= 0)
+                  remainingPayment <= 0
                     ? "green"
                     : getActiveOrderPaymentStatus()
-                      ? "green"
-                      : "error.main",
+                    ? "green"
+                    : "error.main",
               }}
             >
               {customerMustPay <= 0
                 ? "Thu tiền Khách: 0 VND"
                 : getActiveOrderPaymentStatus()
-                  ? `Thu tiền Khách: ${remainingPayment.toLocaleString()} VND`
-                  : `Ghi công nợ: ${remainingPayment.toLocaleString()} VND`}
+                ? `Thu tiền Khách: ${remainingPayment.toLocaleString(
+                    "vi-VN"
+                  )} VND`
+                : `Ghi công nợ: ${remainingPayment.toLocaleString(
+                    "vi-VN"
+                  )} VND`}
             </Typography>
           ) : (
             <Typography
@@ -392,19 +407,22 @@ const UnderInfo = () => {
                   getTotalMoney() - getActiveOrderDeposit() === 0
                     ? "green"
                     : getActiveOrderPaymentStatus()
-                      ? "green"
-                      : "error.main",
+                    ? "green"
+                    : "error.main",
               }}
             >
               {getTotalMoney() - getActiveOrderDeposit() === 0
                 ? "Thu tiền Khách: 0 VND"
                 : getActiveOrderPaymentStatus()
-                  ? `Thu tiền Khách: ${(getTotalMoney() - getActiveOrderDeposit()).toLocaleString()} VND`
-                  : `Ghi công nợ: ${(getTotalMoney() - getActiveOrderDeposit()).toLocaleString()} VND`}
+                ? `Thu tiền Khách: ${(
+                    getTotalMoney() - getActiveOrderDeposit()
+                  ).toLocaleString("vi-VN")} VND`
+                : `Ghi công nợ: ${(
+                    getTotalMoney() - getActiveOrderDeposit()
+                  ).toLocaleString("vi-VN")} VND`}
             </Typography>
           )}
         </Box>
-
       </Box>
 
       {/* Nút hành động */}
@@ -423,20 +441,38 @@ const UnderInfo = () => {
             <>
               <Button
                 variant="contained"
-                sx={{ backgroundColor: "#8DB883", fontSize: "16px", fontWeight: "bold", width: "150px", color: 'white' }}
+                sx={{
+                  backgroundColor: "#8DB883",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  width: "150px",
+                  color: "white",
+                }}
               >
                 In
               </Button>
               <Button
                 variant="contained"
-                sx={{ backgroundColor: "#8DB883", fontSize: "16px", fontWeight: "bold", width: "150px", color: 'white' }}
-              onClick={handlerOrderPay} // Tạm thời
+                sx={{
+                  backgroundColor: "#8DB883",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  width: "150px",
+                  color: "white",
+                }}
+                onClick={handlerOrderPay} // Tạm thời
               >
                 Thanh Toán
               </Button>
               <Button
                 variant="contained"
-                sx={{ backgroundColor: "#8DB883", fontSize: "16px", fontWeight: "bold", width: "150px", color: 'white' }}
+                sx={{
+                  backgroundColor: "#8DB883",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  width: "150px",
+                  color: "white",
+                }}
                 onClick={() => handleUpdate()}
               >
                 Lưu
@@ -449,13 +485,25 @@ const UnderInfo = () => {
             <>
               <Button
                 variant="contained"
-                sx={{ backgroundColor: "#8DB883", fontSize: "16px", fontWeight: "bold", width: "150px", color: 'white' }}
+                sx={{
+                  backgroundColor: "#8DB883",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  width: "150px",
+                  color: "white",
+                }}
               >
                 In
               </Button>
               <Button
                 variant="contained"
-                sx={{ backgroundColor: "#8DB883", fontSize: "16px", fontWeight: "bold", width: "150px", color: 'white' }}
+                sx={{
+                  backgroundColor: "#8DB883",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  width: "150px",
+                  color: "white",
+                }}
                 onClick={() => handleOrderSubmit()}
               >
                 Đặt hàng
@@ -482,8 +530,6 @@ const UnderInfo = () => {
           <Box className="loader" />
         </Box>
       )}
-
-
     </Box>
 
     // Loader
@@ -493,7 +539,6 @@ const UnderInfo = () => {
 };
 
 export default UnderInfo;
-
 
 // <Box
 // sx={{
@@ -556,8 +601,6 @@ export default UnderInfo;
 //         }}
 //       />
 //     </Box>
-
-
 
 //   )}
 
@@ -769,6 +812,5 @@ export default UnderInfo;
 //     <Box className="loader" />
 //   </Box>
 // )}
-
 
 // </Box>

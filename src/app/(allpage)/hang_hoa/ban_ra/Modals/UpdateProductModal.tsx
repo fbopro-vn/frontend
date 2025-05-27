@@ -48,12 +48,12 @@ const UpdateProductModal = ({
 
     const selectedCount = Object.values(checkedRows).filter(Boolean).length;
     const isDisabled = selectedCount !== 1;
-    const selectedProductId = Object.keys(checkedRows).find(
+    const selectedid = Object.keys(checkedRows).find(
         (id) => checkedRows[id]
       );
 
 
-    const { productData, error, isLoading } = useProductData();
+    const { productData, error, isLoading } = useProductData("http://api.sdc.com:8000/v1/products");
     const [dialogType, setDialogType] = useState<"" | "group" | "unit">("");
     const [inputValue, setInputValue] = useState("");
     const [loading, setLoading] = React.useState(false);
@@ -162,8 +162,8 @@ const UpdateProductModal = ({
     };
 
     useEffect(() => {
-        if (open && selectedProductId) {
-          const selectedData = data.find((item) => item.product_id === selectedProductId);
+        if (open && selectedid) {
+          const selectedData = data.find((item) => item.id === selectedid);
           if (!selectedData) return;
       
           reset({
@@ -222,7 +222,7 @@ const UpdateProductModal = ({
                             <Box display="flex" flexDirection="column">
                                 <Typography>Mã Sản Phẩm</Typography>
                                 <TextField disabled sx={{ height: 35, '& .MuiInputBase-root': { height: 35 }, borderRadius: 10 }}
-                                    value={selectedProductId || ""}
+                                    value={selectedid || ""}
                                 />
                             </Box>
 

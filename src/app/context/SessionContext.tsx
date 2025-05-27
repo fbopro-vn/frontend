@@ -1,28 +1,39 @@
-"use client";
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import Cookies from "js-cookie";
-import { v4 as uuidv4 } from "uuid";
+'use client'
+import { useEffect, useState, createContext, useContext, ReactNode } from "react";
 
-interface SessionContextType {
+// 🔹 Đảm bảo userId được truyền vào
+interface SessionContextProps {
   sessionId: string | null;
+  setSessionId: (id: string | null) => void;
 }
 
-const SessionContext = createContext<SessionContextType | undefined>(undefined);
+const SessionContext = createContext<SessionContextProps | undefined>(undefined);
 
-export const SessionProvider = ({ children }: { children: ReactNode }) => {
+export const SessionProvider = ({
+  children,
+  userId, // 👈 Thêm userId ở đây (lấy từ context login)
+}: {
+  children: ReactNode;
+  userId: string;
+}) => {
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
-    let storedSession = Cookies.get("sessionId");
-    if (!storedSession) {
-      storedSession = uuidv4();
-      Cookies.set("sessionId", storedSession, { expires: 7, path: "/" }); // Lưu session 7 ngày
+    if (!userId) return;
+
+    const key = `session_id_${userId}`; // 👈 tạo theo user
+    let id = localStorage.getItem(key);
+
+    if (!id) {
+      id = `session-${userId}`;
+      localStorage.setItem(key, id);
     }
-    setSessionId(storedSession);
-  }, []);
+
+    setSessionId(id);
+  }, [userId]); // 👈 chạy lại khi userId thay đổi
 
   return (
-    <SessionContext.Provider value={{ sessionId }}>
+    <SessionContext.Provider value={{ sessionId, setSessionId }}>
       {children}
     </SessionContext.Provider>
   );
@@ -30,8 +41,6 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
 export const useSession = () => {
   const context = useContext(SessionContext);
-  if (!context) {
-    throw new Error("useSession must be used within a SessionProvider");
-  }
+  if (!context) throw new Error("useSession must be used inside SessionProvider");
   return context;
 };

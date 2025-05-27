@@ -16,7 +16,7 @@ import {
 import { ExpandMore, ExpandLess } from '@mui/icons-material'
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-
+import useRoleData from '@/app/hooks/useRoleData';
 
 type PermissionGroup = {
     label: string
@@ -133,6 +133,8 @@ type AddRoleModalProps = {
 }
 
 const AddRoleModal: React.FC<AddRoleModalProps> = ({ open, onClose }) => {
+    const { mutate } = useRoleData('http://api.sdc.com:8000/v1/roles')
+    const [roleName, setRoleName] = useState('');
     const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({})
     const [checkedPermissions, setCheckedPermissions] = useState<{ [key: string]: boolean }>({})
 
@@ -163,6 +165,42 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ open, onClose }) => {
 
         setCheckedPermissions(newChecked)
     }
+
+
+    const handleSubmit = async () => {
+  if (!roleName.trim()) {
+    alert('Vui lòng nhập tên vai trò');
+    return;
+  }
+
+  const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
+
+  try {
+    const response = await fetch('http://api.sdc.com:8000/v1/roles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` })
+      },
+      body: JSON.stringify({ name: roleName })
+    });
+
+    if (!response.ok) {
+      throw new Error('Tạo vai trò thất bại');
+    }
+
+    const result = await response.json();
+    console.log('Tạo vai trò thành công:', result);
+
+    // Optionally reset
+    setRoleName('');
+    mutate()
+    onClose(); // đóng modal
+  } catch (error) {
+    console.error('Lỗi khi tạo vai trò:', error);
+    alert('Không thể tạo vai trò. Vui lòng thử lại!');
+  }
+};
 
     return (
 
@@ -237,6 +275,8 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ open, onClose }) => {
                         </Typography>
                         <TextField
                             variant='standard'
+                            value={roleName}
+                            onChange={(e) => setRoleName(e.target.value)}
                             sx={{ '& .MuiInputBase-root': { width: 200, height: 40, borderRadius: 2 } }}
                         />
                     </Box>
@@ -328,7 +368,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ open, onClose }) => {
                             minWidth: "100px"
                         }}
                         startIcon={<CheckCircleOutlineOutlinedIcon />}
-                    // onClick={handleSubmit}
+                    onClick={handleSubmit}
                     >
                         {/* {isLoading ? "Đang gửi..." : "Xác nhận"} */} Xác nhận
                     </Button>

@@ -1,7 +1,7 @@
 [
   {
     "select": "",
-    "product_id": "SP01",
+    "id": "SP01",
     "product": "Thùng phiếu vuông 15cm",
     "product_group": "Thùng phiếu",
     "unit": "Cái",
@@ -12,7 +12,7 @@
   },
   {
     "select": "",
-    "product_id": "SP02",
+    "id": "SP02",
     "product": "Thùng phiếu vuông 20cm",
     "product_group": "Thùng phiếu",
     "unit": "Cái",
@@ -23,7 +23,7 @@
   },
   {
     "select": "",
-    "product_id": "SP03",
+    "id": "SP03",
     "product": "Thùng phiếu vuông 25cm",
     "product_group": "Thùng phiếu",
     "unit": "Cái",
@@ -34,7 +34,7 @@
   },
   {
     "select": "",
-    "product_id": "SP04",
+    "id": "SP04",
     "product": "Thùng phiếu vuông 30cm",
     "product_group": "Thùng phiếu",
     "unit": "Cái",
@@ -45,7 +45,7 @@
   },
   {
     "select": "",
-    "product_id": "SP05",
+    "id": "SP05",
     "product": "Thùng phiếu vuông 40cm",
     "product_group": "Thùng phiếu",
     "unit": "Cái",
@@ -56,7 +56,7 @@
   },
   {
     "select": "",
-    "product_id": "SP06",
+    "id": "SP06",
     "product": "TipBox vuông 15 Trong",
     "product_group": "TipBox",
     "unit": "Cái",
@@ -67,7 +67,7 @@
   },
   {
     "select": "",
-    "product_id": "SP07",
+    "id": "SP07",
     "product": "TipBox vuông 15 Đen",
     "product_group": "TipBox",
     "unit": "Cái",
@@ -78,7 +78,7 @@
   },
   {
     "select": "",
-    "product_id": "SP08",
+    "id": "SP08",
     "product": "TipBox vuông 20 Trong",
     "product_group": "TipBox",
     "unit": "Cái",
@@ -89,7 +89,7 @@
   },
   {
     "select": "",
-    "product_id": "SP09",
+    "id": "SP09",
     "product": "TipBox vuông 20 Đen",
     "product_group": "TipBox",
     "unit": "Cái",

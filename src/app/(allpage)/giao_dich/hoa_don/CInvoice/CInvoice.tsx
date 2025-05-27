@@ -60,7 +60,7 @@ const CInvoice = ({data}: {data: typeof BodyInvoice}) => {
     const matchedProduct = BodyMerchandiseOutput.find((item) => item.product === prod.name);
     return {
       ...prod,
-      product_id: matchedProduct?.product_id,
+      id: matchedProduct?.id,
       total:  prod.amount * prod.salePrice 
     };
   });
@@ -333,7 +333,7 @@ const head_column_giao_dich_hoa_don: { [key: string]: string } = {
 };
 
 const head_column_inside: { [key: string]: string } = {
-  product_id: "Mã sản phẩm",
+  id: "Mã sản phẩm",
   name: "Tên sản phẩm",
   amount: "Số lượng",
   salePrice: "Đơn giá",

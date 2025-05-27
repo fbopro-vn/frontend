@@ -17,34 +17,33 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
   const [isCheckoutMode, setIsCheckoutMode] = useState(false);
   const [activeOrderId, setActiveOrderId] = useState<string>("order-1");
   // ✅ Khôi phục dữ liệu từ localStorage khi sessionId có giá trị
-  // useEffect(() => {
-  //   if (sessionId) {
-  //     const storedData = localStorage.getItem(`orderState-${sessionId}`);
-  //     if (storedData) {
-  //       const parsedData = JSON.parse(storedData);
-  //       setOrders(parsedData.orders);
-  //       setActiveOrderId(parsedData.activeOrderId);
-  //       setIsCheckoutMode(parsedData.isCheckoutMode);
-  //     }
-  //   }
-  // }, [sessionId]);
+useEffect(() => {
+  if (sessionId) {
+    const storedData = localStorage.getItem(`orderState-${sessionId}`);
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setOrders(parsedData.orders);
+      setActiveOrderId(parsedData.activeOrderId);
+      setIsCheckoutMode(parsedData.isCheckoutMode);
+    }
+  }
+}, [sessionId]);
 
 
 
   // ✅ Lưu tất cả dữ liệu vào `localStorage` mỗi khi thay đổi
-  //  useEffect(() => {
-  //   if (sessionId) {
-  //     localStorage.setItem(
-  //       `orderState-${sessionId}`,
-  //       JSON.stringify({
-  //         orders,
-  //         activeOrderId,
-  //         isCheckoutMode,
-  //         paidPayment, // ✅ Lưu `paidPayment` vào localStorage
-  //       })
-  //     );
-
-  // }, [orders, activeOrderId, isCheckoutMode, paidPayment, sessionId]);
+  useEffect(() => {
+  if (sessionId) {
+    localStorage.setItem(
+      `orderState-${sessionId}`,
+      JSON.stringify({
+        orders,
+        activeOrderId,
+        isCheckoutMode,
+      })
+    );
+  }
+}, [orders, activeOrderId, isCheckoutMode, sessionId]);
   // ✅ Định nghĩa đơn hàng mặc định
   function defaultOrders(): Order[] {
     return [
@@ -235,7 +234,7 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         theme: "light",
       });
     } else {
-      toast.success(`✅ Đã thêm ${product.name} vào đơn hàng!`, {
+      toast.success(`Đã thêm ${product.name} vào đơn hàng!`, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -274,13 +273,13 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const removeProductFromOrder = (productId: string) => {
+  const removeProductFromOrder = (id: string) => {
     setOrders(prevOrders =>
       prevOrders.map(order =>
         order.id === activeOrderId
           ? {
               ...order,
-              orderDetails: order.orderDetails.filter(p => p.id !== productId)
+              orderDetails: order.orderDetails.filter(p => p.id !== id)
             }
           : order
       )
@@ -646,6 +645,22 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
   };
 
 
+
+  const getActiveOrderPaidPayment = () => {
+  const activeOrder = orders.find(order => order.id === activeOrderId);
+  return activeOrder?.paidPayment || 0;
+};
+
+const updateActiveOrderPaidPayment = (value: number) => {
+  setOrders(prev =>
+    prev.map(order =>
+      order.id === activeOrderId
+        ? { ...order, paidPayment: value }
+        : order
+    )
+  );
+};
+
   return (
     <OrderContext.Provider
       value={{
@@ -678,6 +693,8 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         isCheckoutMode,  // ✅ Thêm trạng thái thanh toán
         checkIfCheckoutMode,
         updateOrderInCart,
+        getActiveOrderPaidPayment,
+        updateActiveOrderPaidPayment
       }}
     >
       {children}

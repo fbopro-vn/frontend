@@ -1,4 +1,4 @@
-// hooks/useProductData.ts
+// hooks/useRoleData.ts
 import useSWR from 'swr';
 
 const fetcher = (url: string) =>
@@ -8,24 +8,24 @@ const fetcher = (url: string) =>
       'Content-Type': 'application/json',
     },
   }).then((res) => {
-    if (!res.ok) throw new Error("Failed to fetch products");
+    if (!res.ok) throw new Error("Failed to fetch Roles");
     return res.json();
   });
 
-const useProductData = (url: string) => {
+const useRoleData = (url: string) => {
   const { data, error, isLoading, mutate } = useSWR(url, fetcher, {
     refreshInterval: 0,
     revalidateOnFocus: false,
   });
 
-  const productData = Array.isArray(data) ? data : [];
+  const roleData = Array.isArray(data) ? data : [];
 
   return {
-    productData,
+    roleData,
     error: error ? error.message : null,
     isLoading,
     mutate,
   };
 };
 
-export default useProductData;
+export default useRoleData;

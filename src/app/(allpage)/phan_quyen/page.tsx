@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
 import UserTable from './ContentTable/UserTable'
-import User from '@/app/api/User/User.json'
+// import User from '@/app/api/User/User.json'
 
 const AddAccountPage = () => {
   // const [filteredData, setFilteredData] = useState<typeof User>([])
 
   return (
     <Container disableGutters>
-        <UserTable data={User}/>
+        <UserTable/>
         {/* Row1 */}
             {/* Add another account */}
           {/* <Divider sx={{ 

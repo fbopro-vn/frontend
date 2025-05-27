@@ -59,7 +59,7 @@ const CDetailOrder = ({data}: {data: typeof BodyDetailOrder}) => {
     const matchedProduct = BodyMerchandiseOutput.find((item) => item.product === prod.name);
     return {
       ...prod,
-      product_id: matchedProduct?.product_id,
+      id: matchedProduct?.id,
       total:  prod.amount * prod.salePrice 
     };
   });
@@ -233,7 +233,7 @@ const CDetailOrder = ({data}: {data: typeof BodyDetailOrder}) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {productListWithId?.map((row, rowIndex) => (
+                  {productListWithId?.map((row: { [key: string]: any}, rowIndex) => (
                     <TableRow key={rowIndex} sx={{ bgcolor: rowIndex % 2 === 0 ? "white" : "#f9f9f9" }}>
                       {Object.keys(head_column_inside).map((key, colIndex) => (
                        <TableCell key={`${rowIndex}-${colIndex}`} sx={{ textAlign: "center" }}>
@@ -311,7 +311,7 @@ const head_column_giao_dich_dat_hang: { [key: string]: string } = {
 
 
 const head_column_inside: { [key: string]: string } = {
-  product_id: "Mã sản phẩm",
+  id: "Mã sản phẩm",
   name: "Tên sản phẩm",
   amount: "Số lượng",
   costPrice: "Giá vốn",

@@ -25,11 +25,12 @@ const CExpenseModal = () => {
     const materialList = useSelector(selectSelectedMaterials);
   
 
-    const formatMoney = (value: number | string | undefined) => {
-        const num = typeof value === "string" ? Number(value.replace(/\./g, "")) : value;
-        if (isNaN(num)) return "";
-        return num.toLocaleString("vi-VN");
-    };
+   const formatMoney = (value: number | string | undefined) => {
+    const num = typeof value === "string" ? Number(value.replace(/\./g, "")) : value ?? NaN;
+    if (isNaN(num)) return "";
+    return num.toLocaleString("vi-VN");
+};
+
 
     return (
         <TableContainer

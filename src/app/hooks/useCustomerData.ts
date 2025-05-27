@@ -1,40 +1,31 @@
-// useFetchCustomers.ts
-import { useState, useEffect } from 'react';
+// hooks/useCustomerData.ts
+import useSWR from 'swr';
 
-// Custom hook để fetch dữ liệu khách hàng
+const fetcher = (url: string) =>
+  fetch(url, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token") || ""}`,
+      'Content-Type': 'application/json',
+    },
+  }).then((res) => {
+    if (!res.ok) throw new Error("Failed to fetch customers");
+    return res.json();
+  });
+
 const useCustomerData = (url: string) => {
-    const [customerData, setCustomerData] = useState<any[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { data, error, isLoading, mutate } = useSWR(url, fetcher, {
+    refreshInterval: 0,
+    revalidateOnFocus: false,
+  });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem("access_token")}`, // Lấy token từ localStorage
-                        'Content-Type': 'application/json', // Optional: để chắc chắn gửi kiểu dữ liệu JSON
-                    },
-                });
+  const customerData = Array.isArray(data) ? data : [];
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                setCustomerData(data);
-            } catch (error: any) {
-                setError(error.message);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [url]); // Lắng nghe thay đổi URL nếu có
-
-    return { customerData, error, isLoading };
+  return {
+    customerData,
+    error: error ? error.message : null,
+    isLoading,
+    mutate,
+  };
 };
 
 export default useCustomerData;

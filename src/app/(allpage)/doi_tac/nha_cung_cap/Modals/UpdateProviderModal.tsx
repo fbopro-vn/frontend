@@ -22,15 +22,15 @@ const UpdateProviderModal = ({ checkedRows, data }: {
   const [open, setOpen] = useState(false);
   const selectedCount = Object.values(checkedRows).filter(Boolean).length;
   const isDisabled = selectedCount !== 1;
-  const selectedProductId = Object.keys(checkedRows).find(
+  const selectedid = Object.keys(checkedRows).find(
     (id) => checkedRows[id]
   );
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<ProviderForm>();
 
   useEffect(() => {
-    if (selectedProductId && open) {
-      const selectedProvider = data.find(p => p.provider_id === selectedProductId);
+    if (selectedid && open) {
+      const selectedProvider = data.find(p => p.provider_id === selectedid);
       if (selectedProvider) {
         reset({
           provider_id: selectedProvider.provider_id,
@@ -40,7 +40,7 @@ const UpdateProviderModal = ({ checkedRows, data }: {
         });
       }
     }
-  }, [selectedProductId, data, open, reset]);
+  }, [selectedid, data, open, reset]);
 
   const onSubmit = (formData: ProviderForm) => {
     console.log('Cập nhật dữ liệu:', formData)

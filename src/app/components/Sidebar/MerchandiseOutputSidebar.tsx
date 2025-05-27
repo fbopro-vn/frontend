@@ -12,7 +12,7 @@ import removeVietnameseTones from "@/app/utils/removeVietnameseTones";
 import ViewDayOutlinedIcon from '@mui/icons-material/ViewDayOutlined';
 
 const MerchandiseOutputSidebar = ({ onFilter }: { onFilter: (data: typeof BodyMerchandiseOutput) => void }) => {
-  const [searchProductId, setSearchProductId] = useState("");  // Nhập mã đặt hàng
+  const [searchid, setSearchid] = useState("");  // Nhập mã đặt hàng
   const [searchProduct, setSearchProduct] = useState(""); // Nhập tên khách hàng
   const [searchProductGroup, setSearchProductGroup] = useState(""); // Nhập tên khách hàng
 
@@ -24,14 +24,14 @@ const MerchandiseOutputSidebar = ({ onFilter }: { onFilter: (data: typeof BodyMe
   const applyFilters = () => {
     if (!BodyMerchandiseOutput || BodyMerchandiseOutput.length === 0) return;
 
-    const lowerCaseProductId = removeVietnameseTones(searchProductId.trim().toLowerCase());
+    const lowerCaseid = removeVietnameseTones(searchid.trim().toLowerCase());
     const lowerCaseProduct = removeVietnameseTones(searchProduct.trim().toLowerCase());
     const lowerCaseProductGroup = removeVietnameseTones(searchProductGroup.trim().toLowerCase());
 
     const filteredProducts = BodyMerchandiseOutput.filter(product => {
 
       // ✅ Lọc theo mã sản phẩm
-      const matchesProductId = lowerCaseProductId ? removeVietnameseTones(product.product_id.toLowerCase()).includes(lowerCaseProductId) : true;
+      const matchesid = lowerCaseid ? removeVietnameseTones(product.id.toLowerCase()).includes(lowerCaseid) : true;
 
       // ✅ Lọc theo tên sản phẩm (fulltext-search)
       const matchesProduct = lowerCaseProduct
@@ -43,7 +43,7 @@ const MerchandiseOutputSidebar = ({ onFilter }: { onFilter: (data: typeof BodyMe
         ? lowerCaseProductGroup.split(" ").every(term => removeVietnameseTones(product.product_group.toLowerCase()).includes(term))
         : true;
 
-      return matchesProductId && matchesProduct && matchesProductGroup;
+      return matchesid && matchesProduct && matchesProductGroup;
     });
 
     onFilter(filteredProducts);
@@ -51,13 +51,13 @@ const MerchandiseOutputSidebar = ({ onFilter }: { onFilter: (data: typeof BodyMe
 
   // Reset Form
   const restForm = () => {
-    setSearchProductId("")
+    setSearchid("")
     setSearchProduct("")
     setSearchProductGroup("")
   }
   useEffect(() => {
     applyFilters();
-  }, [searchProductId, searchProduct, searchProductGroup]);
+  }, [searchid, searchProduct, searchProductGroup]);
 
   return (
     <Box
@@ -102,8 +102,8 @@ const MerchandiseOutputSidebar = ({ onFilter }: { onFilter: (data: typeof BodyMe
               fontSize: 14,
             },
           }}
-          value={searchProductId}
-          onChange={(e) => setSearchProductId(e.target.value)}
+          value={searchid}
+          onChange={(e) => setSearchid(e.target.value)}
         />
         {/* Có gợi ý */}
         <Autocomplete

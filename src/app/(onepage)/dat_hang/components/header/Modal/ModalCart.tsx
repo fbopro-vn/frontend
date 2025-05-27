@@ -34,7 +34,7 @@ export default function ModalCart() {
     const [searchCustomer, setSearchCustomer] = useState(""); 
     const { cartData, error, isLoading } = useCartData('http://api.sdc.com:8000/v1/orders/cart');
     
-    console.log("Du leiu gio", typeof(cartData))
+
     const handleOpen = () => {
         setOpen(true); // Mở modal
     };

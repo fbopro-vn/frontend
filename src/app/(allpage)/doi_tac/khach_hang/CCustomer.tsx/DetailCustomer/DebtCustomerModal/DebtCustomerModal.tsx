@@ -13,12 +13,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import CPaymentModal from '@/app/(allpage)/(ke_toan)/nhap_thu/Modals/DebtPayment/DebtPaymentModal/PaymentModal/CPaymentModal'
 import BlockIcon from '@mui/icons-material/Block';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import BodyInvoice from '@/app/api/BodyInvoice.json'
 
 const PaymentModal = () => {
     const [paymentModalOpen, setPaymentModalOpen] = React.useState(false);
     const handleOpen = () => setPaymentModalOpen(true);
     const handleClose = () => setPaymentModalOpen(false);
-
+  const selectedInvoices = BodyInvoice // mảng hóa đơn
+  const customerPay = 1000000; // số tiền khách trả
+  const totalDebt = 5000000; // tổng nợ
     return (
             <Box>
                 <Button sx={{
@@ -196,7 +199,11 @@ const PaymentModal = () => {
 
                         {/* Body Modal */}
                         <Box>
-                            <CPaymentModal/>
+                            <CPaymentModal
+                              selectedInvoices={selectedInvoices}
+  customerPay={customerPay}
+  totalDebt={totalDebt}
+                            />
                         </Box>
 
                         {/* Foot Modal */}

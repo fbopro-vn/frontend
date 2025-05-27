@@ -8,7 +8,7 @@ import BodyMerchandiseOutput from '@/app/api/Merchandise/BodyMerchandiseOutput.j
 
 const DeleteProductModal = ({
     checkedRows, data }: {
-        checkedRows: Record<string, boolean> // ✅ key là product_id
+        checkedRows: Record<string, boolean> // ✅ key là id
         data: typeof BodyMerchandiseOutput;
     }) => {
 
@@ -16,9 +16,9 @@ const DeleteProductModal = ({
     const [select, setSelect] = useState(false);
 
     // ✅ Lấy index các dòng được chọn
-    // ✅ Lọc danh sách sản phẩm được chọn theo product_id
-    const selectedProducts = data.filter((item) => checkedRows[item.product_id])
-    const selectedProductIds = selectedProducts.map((item) => item.product_id)
+    // ✅ Lọc danh sách sản phẩm được chọn theo id
+    const selectedProducts = data.filter((item) => checkedRows[item.id])
+    const selectedids = selectedProducts.map((item) => item.id)
     return (
         <Box>
             <Button sx={{
@@ -58,7 +58,7 @@ const DeleteProductModal = ({
                         <Box display="flex" alignItems="center" gap={1} mb={1}>
                             <DeleteForeverOutlinedIcon sx={{ color: '#d63031' }} />
                             <Typography fontWeight="bold" color="#d63031" fontSize="16px">
-                                Bạn đang xóa {selectedProductIds.length} sản phẩm:
+                                Bạn đang xóa {selectedids.length} sản phẩm:
                             </Typography>
                         </Box>
 
@@ -72,7 +72,7 @@ const DeleteProductModal = ({
                                 border: "1px solid #eee",
                             }}
                         >
-                            {selectedProductIds.map((id, idx) => (
+                            {selectedids.map((id, idx) => (
                                 <Typography
                                     key={idx}
                                     sx={{

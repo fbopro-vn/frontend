@@ -1,5 +1,5 @@
 interface User {
-    user_id: string
+    id: string
     username: string
     password: string
     fullname: string
@@ -8,7 +8,8 @@ interface User {
     role: string
     email: string
     // avatar: string
-    role: string
+    role: string,
+    birthday: string
 }
 
 interface Product {
@@ -95,7 +96,9 @@ interface Order {
     isCheckoutMode,  // ✅ Thêm trạng thái thanh toán
     checkIfCheckoutMode;
     updateOrderInCart,
-    removeProductFromOrder
+    removeProductFromOrder,
+    getActiveOrderPaidPayment,
+    updateActiveOrderPaidPayment
   }
 
   

@@ -48,7 +48,7 @@ const DebtCustomer = ({ customer_id }: ({ customer_id: string })) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredData?.map((row, rowIndex) => (
+          {filteredData?.map((row: { [key: string]: any}, rowIndex) => (
             <TableRow key={rowIndex} sx={{ bgcolor: rowIndex % 2 === 0 ? "white" : "#f9f9f9" }}>
               {Object.keys(head_column_inside).map((key, colIndex) => (
                 <TableCell key={`${rowIndex}-${colIndex}`} sx={{ textAlign: "center" }}>

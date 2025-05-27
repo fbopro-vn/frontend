@@ -1,3 +1,4 @@
+'use client'
 import SearchCat from "./components/header/SearchCat";
 import Tabs from "./components/header/Tabs";
 import TablePro from "./components/body/TablePro";
