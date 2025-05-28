@@ -18,7 +18,7 @@ export default function AppInitializer() {
       return;
     }
 
-    axios.get('http://api.sdc.com:8000/v1/auth/profile', {
+    axios.get('http://api.fbopro.vn/v1/auth/profile', {
       headers: {
         Authorization: `Bearer ${token}`,
       },

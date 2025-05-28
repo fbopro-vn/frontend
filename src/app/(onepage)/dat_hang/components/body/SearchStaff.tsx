@@ -14,7 +14,7 @@ export default function SearchStaff() {
     activeOrderId,
   } = useOrderContext();
 
-  const { userData } = useUserData("http://api.sdc.com:8000/v1/users");
+  const { userData } = useUserData("http://api.fbopro.vn/v1/users");
 
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
   const [inputValue, setInputValue] = useState("");

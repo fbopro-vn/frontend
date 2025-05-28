@@ -38,7 +38,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import useUserData from "@/app/hooks/useUserData";
 
 const ContentTable = () => {
-  const { userData, isLoading, error } = useUserData("http://api.sdc.com:8000/v1/users")
+  const { userData, isLoading, error } = useUserData("http://api.fbopro.vn/v1/users")
 
   const [searchText, setSearchText] = useState('');
   const checkedColumns = useSelector((state: RootState) => state.columnUser.checkedColumns); // Lấy checkedColumns từ Redux

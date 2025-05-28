@@ -15,7 +15,7 @@ interface propsCustomer {
 export default function SearchCustomer({ onSelectCustomer } : propsCustomer) {
 // gửi đi
 // Gọi custom hook
-const { customerData, error, isLoading } = useCustomerData("http://api.sdc.com:8000/v1/customers");
+const { customerData, error, isLoading } = useCustomerData("http://api.fbopro.vn/v1/customers");
 
   const [value, setValue] = useState<Customer | null>(null); // Giá trị nhập vào ô input
   const [inputValue, setInputValue] = useState(""); // Quản lý nội dung ô nhập

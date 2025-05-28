@@ -62,7 +62,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     },
   });
 
-  const { mutate } = useProductData("http://api.sdc.com:8000/v1/products");
+  const { mutate } = useProductData("http://api.fbopro.vn/v1/products");
   const [dialogType, setDialogType] = useState<"" | "group" | "unit">("");
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = React.useState(false);
@@ -146,7 +146,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       const accessToken = localStorage.getItem("access_token"); // hoặc getFromLocalStorage("access_token")
 
       const response = await axios.post(
-        "http://api.sdc.com:8000/v1/products",
+        "http://api.fbopro.vn/v1/products",
         {
           name: data.name,
           group: data.group,

@@ -133,7 +133,7 @@ type AddRoleModalProps = {
 }
 
 const AddRoleModal: React.FC<AddRoleModalProps> = ({ open, onClose }) => {
-    const { mutate } = useRoleData('http://api.sdc.com:8000/v1/roles')
+    const { mutate } = useRoleData('http://api.fbopro.vn/v1/roles')
     const [roleName, setRoleName] = useState('');
     const [expanded, setExpanded] = useState<{ [key: string]: boolean }>({})
     const [checkedPermissions, setCheckedPermissions] = useState<{ [key: string]: boolean }>({})
@@ -176,7 +176,7 @@ const AddRoleModal: React.FC<AddRoleModalProps> = ({ open, onClose }) => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
 
   try {
-    const response = await fetch('http://api.sdc.com:8000/v1/roles', {
+    const response = await fetch('http://api.fbopro.vn/v1/roles', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

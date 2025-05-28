@@ -75,7 +75,7 @@ const Home = () => {
       if (!token) return;
 
       try {
-        const res = await axios.get("http://api.sdc.com:8000/v1/auth/profile", {
+        const res = await axios.get("http://api.fbopro.vn/v1/auth/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',

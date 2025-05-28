@@ -202,7 +202,7 @@ export default function HomePage() {
     const code = companyCode.toLowerCase();
 
     try {
-      const res = await fetch('http://api.sdc.com:8000/v1/auth/check-company', {
+      const res = await fetch('http://api.fbopro.vn/v1/auth/check-company', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ companyCode: code }),
@@ -247,7 +247,7 @@ export default function HomePage() {
           birthday
       };
 
-      const res = await fetch('http://api.sdc.com:8000/v1/users/admin', {
+      const res = await fetch('http://api.fbopro.vn/v1/users/admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

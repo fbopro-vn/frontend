@@ -37,7 +37,7 @@ const UpdateUserModal = ({
   } = useForm<User>(); // Xác định kiểu dữ liệu cho form
 
   const { roleData, isLoading } = useRoleData(
-    "http://api.sdc.com:8000/v1/roles"
+    "http://api.fbopro.vn/v1/roles"
   );
   const [openUpdateUser, setOpenUpdateUser] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ const UpdateUserModal = ({
 
       // Gửi PATCH request cập nhật user
       await axios.patch(
-        `http://api.sdc.com:8000/v1/users/${selectedUsertId}`,
+        `http://api.fbopro.vn/v1/users/${selectedUsertId}`,
         payload,
         {
           headers: {

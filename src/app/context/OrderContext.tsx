@@ -464,7 +464,7 @@ useEffect(() => {
         return;
       }
 
-      const response = await axios.get(`http://api.sdc.com:8000/v1/orders/${orderId}`, {
+      const response = await axios.get(`http://api.fbopro.vn/v1/orders/${orderId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -623,7 +623,7 @@ useEffect(() => {
         note: activeOrder.note,
       };
   
-      const response = await axios.patch(`http://api.sdc.com:8000/v1/orders/${orderId}`, formattedOrder, {
+      const response = await axios.patch(`http://api.fbopro.vn/v1/orders/${orderId}`, formattedOrder, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }

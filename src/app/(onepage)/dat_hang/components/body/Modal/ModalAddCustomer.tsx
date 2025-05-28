@@ -40,7 +40,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
     setError("");
   };
 
-  const { mutate } = useCustomerData("http://api.sdc.com:8000/v1/customers");
+  const { mutate } = useCustomerData("http://api.fbopro.vn/v1/customers");
   const onSubmit = async (data: Inputs) => {
     setLoading(true);
     setError("");
@@ -58,7 +58,7 @@ const AddCustomerModal: React.FC<AddCustomerModalProps> = ({
 
       // Gửi yêu cầu POST với token trong header
       const response = await axios.post(
-        "http://api.sdc.com:8000/v1/customers",
+        "http://api.fbopro.vn/v1/customers",
         {
           name: data.name,
           phone: data.phone,

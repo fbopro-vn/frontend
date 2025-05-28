@@ -67,7 +67,7 @@ const CCustomer = ({ data }: { data: any[] }) => {
   const handleDelete = async (id: string) => {
     try {
       // Gọi API xóa khách hàng từ BE
-      const response = await fetch(`http://api.sdc.com:8000/v1/customers/${id}`, {
+      const response = await fetch(`http://api.fbopro.vn/v1/customers/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem("access_token")}`, // Lấy token từ localStorage
@@ -80,7 +80,7 @@ const CCustomer = ({ data }: { data: any[] }) => {
       }
   
       // Sau khi xóa thành công, làm mới dữ liệu bằng SWR
-      mutate('http://api.sdc.com:8000/v1/customers'); // Sử dụng SWR để làm mới dữ liệu
+      mutate('http://api.fbopro.vn/v1/customers'); // Sử dụng SWR để làm mới dữ liệu
   
       // Đóng dialog sau khi xóa thành công
       setOpenDialog(false);

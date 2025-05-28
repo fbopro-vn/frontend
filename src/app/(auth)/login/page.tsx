@@ -43,7 +43,7 @@ export default function LoginPage() {
   //     if (!token) return null;
 
   //     try {
-  //       const res = await fetch('http://api.sdc.com:8000/auth/profile', {
+  //       const res = await fetch('http://api.fbopro.vn/auth/profile', {
   //         headers: {
   //           'Authorization': `Bearer ${token}`,
   //         },
@@ -70,7 +70,7 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const res = await fetch("http://api.sdc.com:8000/v1/auth/login", {
+      const res = await fetch("http://api.fbopro.vn/v1/auth/login", {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify({ username, password, companyCode }),

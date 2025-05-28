@@ -42,7 +42,7 @@ const DeleteUserModal = ({
       const accessToken = localStorage.getItem("access_token");
       // Gọi API xóa hàng loạt
       await axios.post(
-        `http://api.sdc.com:8000/v1/users/delete-multiple`,
+        `http://api.fbopro.vn/v1/users/delete-multiple`,
         { userIds: selectedUserIds },
         {
           headers: {

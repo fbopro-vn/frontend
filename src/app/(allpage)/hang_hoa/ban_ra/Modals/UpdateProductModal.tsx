@@ -53,7 +53,7 @@ const UpdateProductModal = ({
       );
 
 
-    const { productData, error, isLoading } = useProductData("http://api.sdc.com:8000/v1/products");
+    const { productData, error, isLoading } = useProductData("http://api.fbopro.vn/v1/products");
     const [dialogType, setDialogType] = useState<"" | "group" | "unit">("");
     const [inputValue, setInputValue] = useState("");
     const [loading, setLoading] = React.useState(false);

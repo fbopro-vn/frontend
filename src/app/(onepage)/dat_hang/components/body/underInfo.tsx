@@ -18,7 +18,7 @@ import usePaginatedCartData from "@/app/hooks/usePaginatedCartData";
 import "@/app/components/css_animation/loaderOther.css";
 
 const UnderInfo = () => {
-  const { mutate } = useCartData("http://api.sdc.com:8000/v1/orders/cart");
+  const { mutate } = useCartData("http://api.fbopro.vn/v1/orders/cart");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const depositInputRef = useRef<HTMLInputElement | null>(null);
   const {
@@ -69,7 +69,7 @@ const UnderInfo = () => {
 
   //   if (activeOrderId) {
   //     try {
-  //       const response = await fetch('http://api.sdc.com:8000/v1/orders', {
+  //       const response = await fetch('http://api.fbopro.vn/v1/orders', {
   //         method: 'POST',
   //         headers: {
   //           'Accept': 'application/json, text/plain, */*',
@@ -88,7 +88,7 @@ const UnderInfo = () => {
   //       await new Promise(resolve => setTimeout(resolve, 2000));
 
   //       // Refresh lại dữ liệu giỏ hàng (fetch lại từ API giỏ hàng)
-  //       mutate('http://api.sdc.com:8000/v1/orders/cart'); // reload dữ liệu cache
+  //       mutate('http://api.fbopro.vn/v1/orders/cart'); // reload dữ liệu cache
   //       }
   //     } catch (error) {
   //       toast.error("❌ Lỗi khi đặt hàng!");
@@ -121,7 +121,7 @@ const UnderInfo = () => {
 
     if (activeOrderId) {
       try {
-        const response = await fetch("http://api.sdc.com:8000/v1/orders", {
+        const response = await fetch("http://api.fbopro.vn/v1/orders", {
           method: "POST",
           headers: {
             Accept: "application/json, text/plain, */*",
@@ -158,7 +158,7 @@ const UnderInfo = () => {
     if (activeOrderId) {
       try {
         const response = await fetch(
-          `http://api.sdc.com:8000/v1/orders/${activeOrderId}`,
+          `http://api.fbopro.vn/v1/orders/${activeOrderId}`,
           {
             method: "PUT",
             headers: {
@@ -172,8 +172,8 @@ const UnderInfo = () => {
         const resData = await response.json();
         console.log(">>>> check REsdata", resData);
         if (resData) {
-          // mutate("http://api.sdc.com:8000/v1/orders");
-          // mutate("http://api.sdc.com:8000/v1/orders/cart");
+          // mutate("http://api.fbopro.vn/v1/orders");
+          // mutate("http://api.fbopro.vn/v1/orders/cart");
           removeOrder(activeOrderId);
           mutate();
         }
@@ -198,7 +198,7 @@ const UnderInfo = () => {
       const updated = await updateOrderInCart(activeOrderId, paidPayment);
       if (updated) {
         removeOrder(activeOrderId);
-        mutate("http://api.sdc.com:8000/v1/orders/cart"); // Refresh lại cache nếu dùng swr
+        mutate("http://api.fbopro.vn/v1/orders/cart"); // Refresh lại cache nếu dùng swr
       } else {
         toast.error("❌ Lỗi khi lưu đơn hàng!");
       }

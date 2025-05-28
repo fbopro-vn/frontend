@@ -32,7 +32,7 @@ export default function ModalCart() {
     const [open, setOpen] = useState(false);
     const [searchOrderId, setSearchOrderId] = useState(""); 
     const [searchCustomer, setSearchCustomer] = useState(""); 
-    const { cartData, error, isLoading } = useCartData('http://api.sdc.com:8000/v1/orders/cart');
+    const { cartData, error, isLoading } = useCartData('http://api.fbopro.vn/v1/orders/cart');
     
 
     const handleOpen = () => {

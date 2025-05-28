@@ -59,8 +59,8 @@ const AddUserModal: React.FC = () => {
     reset();
   };
 
-  const { roleData } = useRoleData("http://api.sdc.com:8000/v1/roles");
-const { mutate } = useUserData("http://api.sdc.com:8000/v1/users");
+  const { roleData } = useRoleData("http://api.fbopro.vn/v1/roles");
+const { mutate } = useUserData("http://api.fbopro.vn/v1/users");
   const [openAddRole, setOpenAddRole] = useState(false);
   const handleOpenAddRole = () => setOpenAddRole(true);
 
@@ -84,7 +84,7 @@ const onSubmit = async (data: UserForm) => {
 
   try {
     await axios.post(
-      "http://api.sdc.com:8000/v1/users",
+      "http://api.fbopro.vn/v1/users",
       {
         username: data.username,
         fullname: data.fullname,

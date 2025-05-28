@@ -26,7 +26,7 @@ const AddCustomerModal: React.FC = () => {
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState("");
-    const { mutate } = useCustomerData('http://api.sdc.com:8000/v1/customers')
+    const { mutate } = useCustomerData('http://api.fbopro.vn/v1/customers')
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
@@ -51,7 +51,7 @@ const AddCustomerModal: React.FC = () => {
         const token = localStorage.getItem("access_token"); // Hoặc bất kỳ nơi nào bạn lưu trữ token
 
         // Gửi yêu cầu POST với token trong header
-        const response = await axios.post("http://api.sdc.com:8000/v1/customers", {
+        const response = await axios.post("http://api.fbopro.vn/v1/customers", {
             name: data.name,
             phone: data.phone,
             address: data.address

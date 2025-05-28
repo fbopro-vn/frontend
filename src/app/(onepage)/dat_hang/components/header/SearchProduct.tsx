@@ -14,7 +14,7 @@ const [value, setValue] = useState(null); // Quản lý giá trị được ch�
 const [inputValue, setInputValue] = useState(""); // Quản lý nội dung ô nhập
 
 // Gọi custom hook
-const { productData, error, isLoading } = useProductData("http://api.sdc.com:8000/v1/products");
+const { productData, error, isLoading } = useProductData("http://api.fbopro.vn/v1/products");
 
 const handleSelectProduct = (product: Product) => {
   dispatch(addProduct(product));
